@@ -22,6 +22,11 @@ class UserRole extends Model
         'role_id',
     ];
 
+    public function scopeAdmin($query)
+    {
+        return $query->where('role_id', 1);
+    }
+
     /**
      * Get the user that owns the userRole
      *
