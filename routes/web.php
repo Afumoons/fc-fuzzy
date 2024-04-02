@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Models\User;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +25,29 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+})->name('home');
+
+Route::get('test', function () {
+    dd('gatau');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard')->middleware(['auth', 'verified']);
+
+/* ################### BEGIN : ADMIN ROUTE HERE #################### */
+Route::prefix('/admin')->middleware(['can:isAdmin'])->name('admin.')->group(function () {
+    /* ################### BEGIN : MONITORING INDIKATOR ROUTE HERE #################### */
+    Route::prefix('/disease')->name('disease.')->group(__DIR__ . '/admin_routes/disease.php');
+    /* ################### END : MONITORING INDIKATOR ROUTE HERE #################### */
+
+    /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
+    Route::prefix('/rulebase')->name('rulebase.')->group(__DIR__ . '/admin_routes/rulebase.php');
+    /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
+
+    /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
+    Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/admin_routes/symptom.php');
+    /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
+});
+/* ################### END : ADMIN ROUTE HERE #################### */
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,4 +55,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
