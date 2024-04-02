@@ -1,10 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Models\Symptom;
 use App\Models\Disease;
-use App\Http\Requests\StoreDiseaseRequest;
 use App\Http\Requests\UpdateDiseaseRequest;
+use App\Http\Requests\StoreDiseaseRequest;
+use App\Http\Controllers\Controller;
 
 class DiseaseController extends Controller
 {
@@ -13,7 +18,21 @@ class DiseaseController extends Controller
      */
     public function index()
     {
-        //
+        $symptomsCount = Symptom::get()->count();
+        $diseasesCount = Disease::get()->count();
+        $usersCount = User::get()->count();
+        $adminsCount = User::whereHas('userRoles', function ($userRoles) {
+            $userRoles->where('role_id', '1');
+        })->get()->count();
+        $user = User::first();
+        return Inertia::render('Admin/Disease', [
+            'symptomsCount' => $symptomsCount,
+            'diseasesCount' => $diseasesCount,
+            'usersCount' => $usersCount,
+            'adminsCount' => $adminsCount,
+            'user' => $user,
+            'isAdmin' => Gate::allows('isAdmin'),
+        ]);
     }
 
     /**

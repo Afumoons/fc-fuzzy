@@ -1,10 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Models\Symptom;
 use App\Models\Rulebase;
-use App\Http\Requests\StoreRulebaseRequest;
+use App\Models\Disease;
 use App\Http\Requests\UpdateRulebaseRequest;
+use App\Http\Requests\StoreRulebaseRequest;
+use App\Http\Controllers\Controller;
 
 class RulebaseController extends Controller
 {
@@ -13,7 +19,21 @@ class RulebaseController extends Controller
      */
     public function index()
     {
-        //
+        $symptomsCount = Symptom::get()->count();
+        $diseasesCount = Disease::get()->count();
+        $usersCount = User::get()->count();
+        $adminsCount = User::whereHas('userRoles', function ($userRoles) {
+            $userRoles->where('role_id', '1');
+        })->get()->count();
+        $user = User::first();
+        return Inertia::render('Admin/Rulebase', [
+            'symptomsCount' => $symptomsCount,
+            'diseasesCount' => $diseasesCount,
+            'usersCount' => $usersCount,
+            'adminsCount' => $adminsCount,
+            'user' => $user,
+            'isAdmin' => Gate::allows('isAdmin'),
+        ]);
     }
 
     /**
