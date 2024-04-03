@@ -50,7 +50,10 @@ class DiseaseController extends Controller
      */
     public function store(StoreDiseaseRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        Disease::create($validatedData);
+
+        return to_route('admin.disease.index');
     }
 
     /**
