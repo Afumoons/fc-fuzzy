@@ -11,9 +11,11 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: User;
     };
-    symptomsCount: number;
-    diseasesCount: number;
-    usersCount: number;
-    adminsCount: number;
+    dashboardCounts: {
+        symptomsCount: number;
+        diseasesCount: number;
+        usersCount: number;
+        adminsCount: number;
+    };
     isAdmin: boolean;
 };
