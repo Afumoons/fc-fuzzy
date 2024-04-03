@@ -17,7 +17,7 @@ class Symptom extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'initial',
+        'code',
         'name',
     ];
 

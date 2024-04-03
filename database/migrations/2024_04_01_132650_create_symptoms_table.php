@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('symptoms', function (Blueprint $table) {
             $table->id();
-            $table->string('initial');
+            $table->string('code');
             $table->string('name');
             $table->timestamps();
         });
