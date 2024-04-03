@@ -37,9 +37,9 @@ export default function Authenticated({
                                 </NavLink>
                                 {isAdmin && (
                                     <NavLink
-                                        href={route("admin.disease.index")}
+                                        href={route("admin.symptom.index")}
                                         active={route().current(
-                                            "admin.disease*"
+                                            "admin.symptom*"
                                         )}
                                     >
                                         Data Gejala
@@ -47,9 +47,9 @@ export default function Authenticated({
                                 )}
                                 {isAdmin && (
                                     <NavLink
-                                        href={route("admin.symptom.index")}
+                                        href={route("admin.disease.index")}
                                         active={route().current(
-                                            "admin.symptom*"
+                                            "admin.disease*"
                                         )}
                                     >
                                         Data Penyakit
