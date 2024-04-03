@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Symptom;
 use App\Models\Disease;
 use App\Http\Requests\UpdateDiseaseRequest;
-use App\Http\Requests\StoreDiseaseRequest;
+use App\Http\Requests\Admin\StoreDiseaseRequest;
 use App\Http\Controllers\Controller;
 
 class DiseaseController extends Controller

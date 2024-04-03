@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDiseaseRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreDiseaseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('isAdmin');
     }
 
     /**
@@ -22,7 +23,10 @@ class StoreDiseaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'code' => ['required', 'string', 'unique:diseases,code'],
+            'name' => ['required', 'string'],
+            'cause' => ['sometimes', 'string'],
+            'solution' => ['sometimes', 'string'],
         ];
     }
 }
