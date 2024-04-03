@@ -20,13 +20,14 @@ class AdminController extends Controller
         $adminsCount = User::whereHas('userRoles', function ($userRoles) {
             $userRoles->where('role_id', '1');
         })->get()->count();
-        $user = User::first();
-        return Inertia::render('Dashboard', [
+        $dashboardCounts = (object)[
             'symptomsCount' => $symptomsCount,
             'diseasesCount' => $diseasesCount,
             'usersCount' => $usersCount,
             'adminsCount' => $adminsCount,
-            'user' => $user,
+        ];
+        return Inertia::render('Dashboard', [
+            'dashboardCounts' => $dashboardCounts,
             'isAdmin' => Gate::allows('isAdmin'),
         ]);
     }
