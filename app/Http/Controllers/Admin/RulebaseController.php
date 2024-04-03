@@ -26,7 +26,7 @@ class RulebaseController extends Controller
             $userRoles->where('role_id', '1');
         })->get()->count();
         $user = User::first();
-        return Inertia::render('Admin/Rulebase', [
+        return Inertia::render('Admin/Rulebase/Index', [
             'symptomsCount' => $symptomsCount,
             'diseasesCount' => $diseasesCount,
             'usersCount' => $usersCount,

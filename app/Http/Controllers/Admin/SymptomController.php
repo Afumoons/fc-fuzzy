@@ -25,7 +25,7 @@ class SymptomController extends Controller
             $userRoles->where('role_id', '1');
         })->get()->count();
         $user = User::first();
-        return Inertia::render('Admin/Symptom', [
+        return Inertia::render('Admin/Symptom/Index', [
             'symptomsCount' => $symptomsCount,
             'diseasesCount' => $diseasesCount,
             'usersCount' => $usersCount,

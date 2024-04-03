@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Link, Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
-export default function Disease({ auth, isAdmin }: PageProps) {
+export default function Index({ auth, isAdmin }: PageProps) {
     return (
         <AuthenticatedLayout
             user={auth.user}
