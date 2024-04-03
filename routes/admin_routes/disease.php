@@ -7,4 +7,5 @@ use App\Http\Controllers\Admin\DiseaseController;
 Route::get('/', [DiseaseController::class, 'index'])->name('index');
 Route::get('/dt/conducting-inspection/ajax', [DiseaseController::class, 'DtConductingInspectionList'])->name('dt.conducting-inspection.ajax');
 Route::get('/create', [DiseaseController::class, 'create'])->name('create');
+Route::post('/store', [DiseaseController::class, 'store'])->name('store');
 Route::get('/{inspectionSchedule?}', [DiseaseController::class, 'show'])->name('show');
