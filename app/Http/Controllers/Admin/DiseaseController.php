@@ -40,7 +40,9 @@ class DiseaseController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Disease/Create', [
+            'isAdmin' => Gate::allows('isAdmin'),
+        ]);
     }
 
     /**
