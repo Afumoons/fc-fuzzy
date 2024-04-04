@@ -11,12 +11,21 @@ export interface Disease {
     name: string;
     cause: string;
     solution: string;
+    rulebases: Array<Rulebase>;
 }
 
 export interface Symptom {
     id: number;
     code: string;
     name: string;
+    rulebases: Array<Rulebase>;
+}
+
+export interface Rulebase {
+    id: number;
+    disease_id: number;
+    symptom_id: number;
+    value: boolean;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
@@ -35,4 +44,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     diseases: Array<Disease>;
     symptom: Symptom;
     symptoms: Array<Symptom>;
+    rulebase: Rulebase;
+    rulebases: Array<Rulebase>;
 };
