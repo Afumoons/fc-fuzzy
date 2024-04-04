@@ -19,45 +19,17 @@ class RulebaseController extends Controller
      */
     public function index()
     {
-        $symptomsCount = Symptom::get()->count();
-        $diseasesCount = Disease::get()->count();
-        $usersCount = User::get()->count();
-        $adminsCount = User::whereHas('userRoles', function ($userRoles) {
-            $userRoles->where('role_id', '1');
-        })->get()->count();
-        $user = User::first();
+        $diseases = Disease::with('rulebases')->get();
+        $symptoms = Symptom::with(['rulebases' => function ($rulebases) {
+            $rulebases;
+        }])->get();
+        $rulebases = Rulebase::get();
         return Inertia::render('Admin/Rulebase/Index', [
-            'symptomsCount' => $symptomsCount,
-            'diseasesCount' => $diseasesCount,
-            'usersCount' => $usersCount,
-            'adminsCount' => $adminsCount,
-            'user' => $user,
+            'diseases' => $diseases,
+            'symptoms' => $symptoms,
+            'rulebases' => $rulebases,
             'isAdmin' => Gate::allows('isAdmin'),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreRulebaseRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Rulebase $rulebase)
-    {
-        //
     }
 
     /**
