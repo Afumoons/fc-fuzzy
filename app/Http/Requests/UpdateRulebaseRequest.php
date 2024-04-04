@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRulebaseRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateRulebaseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::allows('isAdmin');
     }
 
     /**
@@ -22,7 +23,7 @@ class UpdateRulebaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'rulebases' => ['array'],
         ];
     }
 }

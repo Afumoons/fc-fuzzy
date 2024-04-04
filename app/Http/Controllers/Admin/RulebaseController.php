@@ -35,17 +35,50 @@ class RulebaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rulebase $rulebase)
+    public function edit(Disease $disease)
     {
-        //
+        $disease = Disease::with('rulebases')->findOrFail($disease->id);
+
+        $symptoms = Symptom::get();
+        return Inertia::render('Admin/Rulebase/Edit', [
+            'isAdmin' => Gate::allows('isAdmin'),
+            'disease' => $disease,
+            'symptoms' => $symptoms,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRulebaseRequest $request, Rulebase $rulebase)
+    public function update(UpdateRulebaseRequest $request, Disease $disease)
     {
-        //
+        $validatedData = $request->validated();
+        $rulebases = Rulebase::where('disease_id', $disease->id)->delete();
+        $symptoms = Symptom::get();
+        foreach ($symptoms as $key => $symptom) {
+            $exist = false;
+            foreach ($validatedData['rulebases'] as $key => $rulebase) {
+                try {
+                    if ($rulebase['symptom_id'] == $symptom->id) {
+                        $exist = true;
+                        Rulebase::create([
+                            'disease_id' => $disease->id,
+                            'symptom_id' => $symptom->id,
+                            'value' => $rulebase['value'] == "true" ? true : false,
+                        ]);
+                    }
+                } catch (\Throwable $th) {
+                }
+            }
+            if (!$exist) {
+                Rulebase::create([
+                    'disease_id' => $disease->id,
+                    'symptom_id' => $symptom->id,
+                    'value' => false,
+                ]);
+            }
+        }
+        return to_route('admin.rulebase.index');
     }
 
     /**
