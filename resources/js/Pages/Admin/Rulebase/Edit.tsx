@@ -44,7 +44,6 @@ export default function Create({
             value,
         };
         setData("rulebases", newRulebases);
-        console.log(data.rulebases, e.target.checked);
     };
 
     return (

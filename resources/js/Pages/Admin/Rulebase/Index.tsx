@@ -11,8 +11,6 @@ export default function Index({
     symptoms,
     rulebases,
 }: PageProps) {
-    console.log(diseases);
-
     return (
         <AuthenticatedLayout
             user={auth.user}
