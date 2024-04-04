@@ -6,9 +6,8 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Symptom;
-use App\Models\Disease;
-use App\Http\Requests\UpdateSymptomRequest;
-use App\Http\Requests\StoreSymptomRequest;
+use App\Http\Requests\Admin\UpdateSymptomRequest;
+use App\Http\Requests\Admin\StoreSymptomRequest;
 use App\Http\Controllers\Controller;
 
 class SymptomController extends Controller
@@ -18,19 +17,9 @@ class SymptomController extends Controller
      */
     public function index()
     {
-        $symptomsCount = Symptom::get()->count();
-        $diseasesCount = Disease::get()->count();
-        $usersCount = User::get()->count();
-        $adminsCount = User::whereHas('userRoles', function ($userRoles) {
-            $userRoles->where('role_id', '1');
-        })->get()->count();
-        $user = User::first();
+        $symptoms = Symptom::get();
         return Inertia::render('Admin/Symptom/Index', [
-            'symptomsCount' => $symptomsCount,
-            'diseasesCount' => $diseasesCount,
-            'usersCount' => $usersCount,
-            'adminsCount' => $adminsCount,
-            'user' => $user,
+            'symptoms' => $symptoms,
             'isAdmin' => Gate::allows('isAdmin'),
         ]);
     }
@@ -40,7 +29,9 @@ class SymptomController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Symptom/Create', [
+            'isAdmin' => Gate::allows('isAdmin'),
+        ]);
     }
 
     /**
@@ -48,15 +39,10 @@ class SymptomController extends Controller
      */
     public function store(StoreSymptomRequest $request)
     {
-        //
-    }
+        $validatedData = $request->validated();
+        Symptom::create($validatedData);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Symptom $symptom)
-    {
-        //
+        return to_route('admin.symptom.index');
     }
 
     /**
@@ -64,15 +50,20 @@ class SymptomController extends Controller
      */
     public function edit(Symptom $symptom)
     {
-        //
+        return Inertia::render('Admin/Symptom/Edit', [
+            'isAdmin' => Gate::allows('isAdmin'),
+            'symptom' => $symptom,
+        ]);
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateSymptomRequest $request, Symptom $symptom)
     {
-        //
+        $validatedData = $request->validated();
+        $symptom->update($validatedData);
+
+        return to_route('admin.symptom.index');
     }
 
     /**
@@ -80,6 +71,6 @@ class SymptomController extends Controller
      */
     public function destroy(Symptom $symptom)
     {
-        //
+        $symptom->delete();
     }
 }

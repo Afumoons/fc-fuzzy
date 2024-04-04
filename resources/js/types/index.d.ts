@@ -13,6 +13,11 @@ export interface Disease {
     solution: string;
 }
 
+export interface Symptom {
+    id: number;
+    code: string;
+    name: string;
+}
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
@@ -28,4 +33,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     users: Array<User>;
     disease: Disease;
     diseases: Array<Disease>;
+    symptom: Symptom;
+    symptoms: Array<Symptom>;
 };

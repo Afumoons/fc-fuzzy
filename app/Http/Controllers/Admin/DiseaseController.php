@@ -10,6 +10,7 @@ use App\Models\Disease;
 use App\Http\Requests\Admin\UpdateDiseaseRequest;
 use App\Http\Requests\Admin\StoreDiseaseRequest;
 use App\Http\Controllers\Controller;
+use Inertia\Response;
 
 class DiseaseController extends Controller
 {
@@ -44,14 +45,6 @@ class DiseaseController extends Controller
         Disease::create($validatedData);
 
         return to_route('admin.disease.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Disease $disease)
-    {
-        //
     }
 
     /**
