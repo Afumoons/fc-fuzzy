@@ -23,6 +23,10 @@ class Rulebase extends Model
         'value',
     ];
 
+    protected $casts = [
+        'value' => 'boolean',
+    ];
+
     /**
      * Get the symptom that owns the rulebase
      *
