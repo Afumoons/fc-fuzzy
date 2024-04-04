@@ -5,6 +5,13 @@ export interface User {
     email_verified_at: string;
 }
 
+export interface Disease {
+    id: number;
+    code: string;
+    name: string;
+    cause: string;
+    solution: string;
+}
 
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
@@ -18,4 +25,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         adminsCount: number;
     };
     isAdmin: boolean;
+    users: Array<User>;
+    disease: Disease;
+    diseases: Array<Disease>;
 };
