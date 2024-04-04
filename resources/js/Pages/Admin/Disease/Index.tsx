@@ -1,8 +1,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Link, Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-export default function Index({ auth, isAdmin }: PageProps) {
+export default function Index({ auth, isAdmin, diseases }: PageProps) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -29,8 +31,56 @@ export default function Index({ auth, isAdmin }: PageProps) {
                                 Tambah Data Penyakit
                             </Link>
                         </div>
-                        <div className="col-12">
-                            <p>Lorem ipsum dolor sit amet.</p>
+                        <div className="mt-3 col-12 table-responsive">
+                            <table className="table table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NO</th>
+                                        <th scope="col">Kode</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Penyebab</th>
+                                        <th scope="col">
+                                            Solusi Pertolongan Pertama
+                                        </th>
+                                        <th scope="col">Opsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {diseases.map((disease, key) => (
+                                        <tr key={disease.id}>
+                                            <td>{key + 1}</td>
+                                            <td>{disease.code}</td>
+                                            <td>{disease.name}</td>
+                                            <td>{disease.cause}</td>
+                                            <td>{disease.solution}</td>
+                                            <td className="min-w-20">
+                                                <Link
+                                                    href={route(
+                                                        "admin.disease.edit",
+                                                        { disease }
+                                                    )}
+                                                    className="mr-2 badge bg-warning text-decoration-none p-2"
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={faPenToSquare}
+                                                    />
+                                                </Link>
+                                                <Link
+                                                    href={route(
+                                                        "admin.disease.destroy",
+                                                        { disease }
+                                                    )}
+                                                    className="badge bg-danger text-decoration-none p-2"
+                                                >
+                                                    <FontAwesomeIcon
+                                                        icon={faTrashCan}
+                                                    />
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

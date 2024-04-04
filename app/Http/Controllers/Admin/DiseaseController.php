@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Symptom;
 use App\Models\Disease;
-use App\Http\Requests\UpdateDiseaseRequest;
+use App\Http\Requests\Admin\UpdateDiseaseRequest;
 use App\Http\Requests\Admin\StoreDiseaseRequest;
 use App\Http\Controllers\Controller;
 
@@ -18,19 +18,9 @@ class DiseaseController extends Controller
      */
     public function index()
     {
-        $symptomsCount = Symptom::get()->count();
-        $diseasesCount = Disease::get()->count();
-        $usersCount = User::get()->count();
-        $adminsCount = User::whereHas('userRoles', function ($userRoles) {
-            $userRoles->where('role_id', '1');
-        })->get()->count();
-        $user = User::first();
+        $diseases = Disease::get();
         return Inertia::render('Admin/Disease/Index', [
-            'symptomsCount' => $symptomsCount,
-            'diseasesCount' => $diseasesCount,
-            'usersCount' => $usersCount,
-            'adminsCount' => $adminsCount,
-            'user' => $user,
+            'diseases' => $diseases,
             'isAdmin' => Gate::allows('isAdmin'),
         ]);
     }
@@ -69,7 +59,10 @@ class DiseaseController extends Controller
      */
     public function edit(Disease $disease)
     {
-        //
+        return Inertia::render('Admin/Disease/Edit', [
+            'isAdmin' => Gate::allows('isAdmin'),
+            'disease' => $disease,
+        ]);
     }
 
     /**
@@ -77,7 +70,10 @@ class DiseaseController extends Controller
      */
     public function update(UpdateDiseaseRequest $request, Disease $disease)
     {
-        //
+        $validatedData = $request->validated();
+        $disease->update($validatedData);
+
+        return to_route('admin.disease.index');
     }
 
     /**
@@ -85,6 +81,6 @@ class DiseaseController extends Controller
      */
     public function destroy(Disease $disease)
     {
-        //
+        $disease->delete();
     }
 }
