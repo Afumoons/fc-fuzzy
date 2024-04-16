@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use Inertia\Inertia;
+use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use App\Models\User;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -18,14 +16,8 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
+Route::get('/', [FrontController::class, 'index'])->name('home');
+Route::get('/data', [FrontController::class, 'data'])->name('data');
 
 Route::get('test', function () {
     dd('gatau');

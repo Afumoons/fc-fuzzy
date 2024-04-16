@@ -1,20 +1,52 @@
-import { useState, PropsWithChildren, ReactNode } from "react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
-import Dropdown from "@/Components/Dropdown";
-import NavLink from "@/Components/NavLink";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { useState, PropsWithChildren, ReactNode, useEffect } from "react";
 import { User } from "@/types";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import "../../../public/css/bootstrap.min.css";
+import "../../../public/css/flaticon.css";
+import "../../../public/css/menu.css";
+import "../../../public/css/dropdown-effects/fade-down.css";
+import "../../../public/css/magnific-popup.css";
+import "../../../public/css/owl.carousel.min.css";
+import "../../../public/css/owl.theme.default.min.css";
+import "../../../public/css/animate.css";
+import "../../../public/css/style.css";
+import "../../../public/css/responsive.css";
+import FrontHeader from "@/Components/FrontHeader";
+import FrontFooter from "@/Components/FrontFooter";
 
 export default function HomeLayout({
     user,
-    header,
     children,
     isAdmin,
-}: PropsWithChildren<{ user: User; header?: ReactNode; isAdmin: boolean }>) {
+}: PropsWithChildren<{ user: User; isAdmin: boolean }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
-    return <h1>f</h1>;
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const loaderWrapper = document.getElementById("loader-wrapper");
+            if (loaderWrapper) {
+                loaderWrapper.style.display = "none";
+            }
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    return (
+        <div className="min-h-screen">
+            <div id="loader-wrapper">
+                <div id="loader">
+                    <div className="loader-inner"></div>
+                </div>
+            </div>
+            <div id="page" className="page">
+                <FrontHeader user={user} />
+
+                {children}
+
+                <FrontFooter />
+            </div>
+        </div>
+    );
 }
