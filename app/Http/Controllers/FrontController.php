@@ -44,7 +44,7 @@ class FrontController extends Controller
         RulebaseTemp::IsOwned()->delete();
         UserInput::IsOwned()->IsNotDone()->delete();
 
-        foreach ($rulebases as $key => $rulebase) {
+        foreach ($rulebases as $rulebase) {
             RulebaseTemp::create([
                 'user_id' => Auth::user()->id,
                 'disease_id' => $rulebase->disease_id,
@@ -56,13 +56,13 @@ class FrontController extends Controller
         $no = 0;
         $rule = array();
         $diseases = Disease::get();
-        foreach ($diseases as $key => $disease) {
+        foreach ($diseases as $disease) {
             $nox = $no++;
             $xx = 0;
             $disease_id = $disease->id;
             $rule2 = array();
             $rulebases = Rulebase::where('disease_id', $disease->id)->where('value', true)->get();
-            foreach ($rulebases as $key => $rulebase) {
+            foreach ($rulebases as $rulebase) {
                 $xxx = $xx++;
                 array_push($rule2, $rulebase->symptom->code);
             }
@@ -104,12 +104,8 @@ class FrontController extends Controller
         // if ya
         if ($request->value) {
             $diseasesArray = [];
-            $rulebaseTemps = RulebaseTemp::IsOwned()
-                ->where('symptom_id', $request->symptom_id)
-                ->where('value', true)
-                ->get();
 
-            foreach ($rulebaseTemps as $key => $rulebaseTemp) {
+            foreach (RulebaseTemp::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', true)->get() as $key => $rulebaseTemp) {
                 $diseasesArray[$key] =  $rulebaseTemp->disease_id;
             }
 
@@ -144,16 +140,11 @@ class FrontController extends Controller
             //if tidak
         } else {
             // hapus yang symptom_id true
-            $rulebaseTemps = RulebaseTemp::IsOwned()
-                ->where('symptom_id', $request->symptom_id)
-                ->where('value', true)
-                ->get();
-            foreach ($rulebaseTemps as $key => $rulebaseTemp) {
+            foreach (RulebaseTemp::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', true)->get() as $key => $rulebaseTemp) {
                 RulebaseTemp::IsOwned()->where('disease_id', $rulebaseTemp->disease_id)->delete();
             }
 
-            $rulebaseTemps2 = RulebaseTemp::IsOwned()->get();
-            if ($rulebaseTemps2->count() > 0) {
+            if (RulebaseTemp::IsOwned()->get()->count() > 0) {
                 $symptomArray = [];
                 foreach (UserInput::IsOwned()->IsNotDone()->get() as $key => $userInput) {
                     $symptomArray[$key] = $userInput->symptom_id;
