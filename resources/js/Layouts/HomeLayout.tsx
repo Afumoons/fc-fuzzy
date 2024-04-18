@@ -18,7 +18,13 @@ export default function HomeLayout({
     children,
     isAdmin,
     logoLink,
-}: PropsWithChildren<{ user: User; isAdmin: boolean; logoLink?: string }>) {
+    loading,
+}: PropsWithChildren<{
+    user: User;
+    isAdmin: boolean;
+    logoLink?: string;
+    loading?: boolean;
+}>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -35,11 +41,13 @@ export default function HomeLayout({
 
     return (
         <div className="min-h-screen">
-            <div id="loader-wrapper">
-                <div id="loader">
-                    <div className="loader-inner"></div>
+            {loading && (
+                <div id="loader-wrapper">
+                    <div id="loader">
+                        <div className="loader-inner"></div>
+                    </div>
                 </div>
-            </div>
+            )}
             <div id="page" className="page">
                 <FrontHeader user={user} imageLink={logoLink} />
 

@@ -9,7 +9,7 @@ export default function Home({
     phpVersion,
 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
     return (
-        <HomeLayout user={auth.user} isAdmin={isAdmin}>
+        <HomeLayout user={auth.user} isAdmin={isAdmin} loading={true}>
             <Head>
                 <title>Beranda</title>
             </Head>
