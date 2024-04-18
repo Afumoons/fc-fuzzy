@@ -53,7 +53,10 @@ export default function History({
                                                 {rulebaseHistory.user.email}
                                             </td>
                                             <td>
-                                                {rulebaseHistory.disease.name}
+                                                {rulebaseHistory.disease
+                                                    ? rulebaseHistory.disease
+                                                          .name
+                                                    : "Tidak ditemukan"}
                                             </td>
                                             <td>
                                                 <Link

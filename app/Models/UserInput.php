@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Symptom;
+use App\Models\RulebaseHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,7 @@ class UserInput extends Model
     protected $fillable = [
         'user_id',
         'symptom_id',
+        'rulebase_history_id',
         'value',
     ];
 
@@ -31,6 +33,11 @@ class UserInput extends Model
     function scopeIsOwned($query)
     {
         return $query->where('user_id', Auth::user()->id);
+    }
+
+    function scopeIsNotDone($query)
+    {
+        return $query->where('rulebase_history_id', null);
     }
 
     /**
@@ -51,5 +58,15 @@ class UserInput extends Model
     public function symptom(): BelongsTo
     {
         return $this->belongsTo(Symptom::class, 'symptom_id', 'id');
+    }
+
+    /**
+     * Get the symptom that owns the rulebase
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rulebaseHistory(): BelongsTo
+    {
+        return $this->belongsTo(RulebaseHistory::class, 'rulebase_history_id', 'id');
     }
 }

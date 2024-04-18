@@ -42,7 +42,7 @@ class FrontController extends Controller
     {
         $rulebases = Rulebase::get();
         RulebaseTemp::IsOwned()->delete();
-        UserInput::isOwned()->delete();
+        UserInput::IsOwned()->IsNotDone()->delete();
 
         foreach ($rulebases as $key => $rulebase) {
             RulebaseTemp::create([
@@ -92,7 +92,7 @@ class FrontController extends Controller
     {
         $request['value'] = $request->value == "true" ? true : false;
 
-        $cek = UserInput::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
+        $cek = UserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
         if (empty($cek[0])) {
             UserInput::create([
                 'user_id' => Auth::user()->id,
@@ -120,7 +120,7 @@ class FrontController extends Controller
             RulebaseTemp::IsOwned()->where('value', false)->delete();
 
             $symptomArray = [];
-            foreach (UserInput::IsOwned()->where('value', true)->get() as $key => $userInput) {
+            foreach (UserInput::IsOwned()->IsNotDone()->where('value', true)->get() as $key => $userInput) {
                 $symptomArray[$key] = $userInput->symptom_id;
             }
 
@@ -155,7 +155,7 @@ class FrontController extends Controller
             $rulebaseTemps2 = RulebaseTemp::IsOwned()->get();
             if ($rulebaseTemps2->count() > 0) {
                 $symptomArray = [];
-                foreach (UserInput::IsOwned()->get() as $key => $userInput) {
+                foreach (UserInput::IsOwned()->IsNotDone()->get() as $key => $userInput) {
                     $symptomArray[$key] = $userInput->symptom_id;
                 }
 
@@ -192,18 +192,25 @@ class FrontController extends Controller
                 $disease = RulebaseTemp::IsOwned()->where('value', true)->first()?->disease;
             }
 
-            RulebaseHistory::create([
+            $rulebaseHistory = RulebaseHistory::create([
                 'user_id' => Auth::user()->id,
                 'disease_id' => $disease->id ?? null,
             ]);
+            $userInputs = UserInput::IsOwned()->IsNotDone()->with('symptom')->get();
+            foreach ($userInputs as $key => $userInput) {
+                $userInput->update([
+                    'rulebase_history_id' => $rulebaseHistory->id,
+                ]);
+            }
         } else {
             $disease = $rulebaseHistory->disease;
+            $userInputs = $rulebaseHistory->userInputs()->with('symptom')->get();
         }
 
-        // UserInput::IsOwned()->delete();
+        // UserInput::IsOwned()->IsNotDone()->delete();
         return Inertia::render('Diagnosis', [
             'disease' => $disease,
-            'userInputs' => UserInput::IsOwned()->with('symptom')->get(),
+            'userInputs' => $userInputs,
         ]);
     }
 

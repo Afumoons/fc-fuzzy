@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use App\Models\Disease;
+use App\Models\UserInput;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RulebaseHistory extends Model
 {
@@ -40,5 +42,15 @@ class RulebaseHistory extends Model
     public function disease(): BelongsTo
     {
         return $this->belongsTo(Disease::class, 'disease_id', 'id');
+    }
+
+    /**
+     * Get the userInputs that owned by rulebaseHistory
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userInputs(): HasMany
+    {
+        return $this->hasMany(UserInput::class, 'rulebase_history_id', 'id');
     }
 }
