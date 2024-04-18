@@ -7,7 +7,10 @@ export default function History({
     auth,
     isAdmin,
     rulebaseHistorys,
-}: PageProps<{ laravelVersion: string; phpVersion: string }>) {
+}: PageProps<{
+    laravelVersion: string;
+    phpVersion: string;
+}>) {
     return (
         <HomeLayout user={auth.user} isAdmin={isAdmin}>
             <Head>
@@ -33,7 +36,7 @@ export default function History({
                         chaining.
                     </h5>
                     <div className="card card-body">
-                        <table className="table table-bordered">
+                        <table className="table table-hover table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>No</th>

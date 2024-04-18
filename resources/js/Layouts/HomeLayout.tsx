@@ -17,7 +17,8 @@ export default function HomeLayout({
     user,
     children,
     isAdmin,
-}: PropsWithChildren<{ user: User; isAdmin: boolean }>) {
+    logoLink,
+}: PropsWithChildren<{ user: User; isAdmin: boolean; logoLink?: string }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -40,7 +41,7 @@ export default function HomeLayout({
                 </div>
             </div>
             <div id="page" className="page">
-                <FrontHeader user={user} />
+                <FrontHeader user={user} imageLink={logoLink} />
 
                 {children}
 

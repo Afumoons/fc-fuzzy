@@ -211,6 +211,7 @@ class FrontController extends Controller
         return Inertia::render('Diagnosis', [
             'disease' => $disease,
             'userInputs' => $userInputs,
+            'logoLink' => asset('images/logo-grey.png'),
         ]);
     }
 

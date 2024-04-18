@@ -32,7 +32,7 @@ export default function Index({ auth, isAdmin, diseases }: PageProps) {
                             </Link>
                         </div>
                         <div className="mt-3 col-12 table-responsive">
-                            <table className="table table-hover ">
+                            <table className="table table-hover table-striped">
                                 <thead>
                                     <tr>
                                         <th scope="col">NO</th>

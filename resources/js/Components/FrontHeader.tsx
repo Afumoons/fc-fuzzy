@@ -4,11 +4,13 @@ import { Link } from "@inertiajs/react";
 interface FrontHeaderProps {
     user: User;
     className?: string;
+    imageLink?: string;
 }
 
 export default function FrontHeader({
     user,
     className = "",
+    imageLink,
     ...props
 }: FrontHeaderProps) {
     return (
@@ -80,7 +82,11 @@ export default function FrontHeader({
                     <div className="desktoplogo">
                         <Link href="#hero-1">
                             <img
-                                src="images/logo-grey.png"
+                                src={
+                                    imageLink
+                                        ? imageLink
+                                        : "images/logo-grey.png"
+                                }
                                 width="180"
                                 height="40"
                                 alt="header-logo"

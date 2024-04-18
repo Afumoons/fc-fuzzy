@@ -33,7 +33,7 @@ export default function Index({ auth, isAdmin, symptoms }: PageProps) {
                         </div>
                         {symptoms[0] ? (
                             <div className="mt-3 col-12 table-responsive">
-                                <table className="table table-hover ">
+                                <table className="table table-hover table-striped">
                                     <thead>
                                         <tr>
                                             <th scope="col">NO</th>
