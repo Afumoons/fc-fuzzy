@@ -18,10 +18,11 @@ export default function BreadCrumb({
         <>
             <style>
                 {`
-      #breadcrumb{
-        background-image:url('images/article-details-small.jpg')
-      }
-    `}
+                    #breadcrumb{
+                        background-image:url('images/article-details-small.jpg');
+                        background-size:cover;
+                    }
+                `}
             </style>
             <div id="breadcrumb" className="division">
                 <div className="container">

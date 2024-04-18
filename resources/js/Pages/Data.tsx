@@ -1,6 +1,7 @@
 import { Link, Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
+import BreadCrumb from "@/Components/Front/BreadCrumb";
 
 export default function Data({
     auth,
@@ -15,47 +16,11 @@ export default function Data({
                 <title>Data</title>
             </Head>
 
-            <style>
-                {`
-              #breadcrumb{
-                background-image:url('images/article-details-small.jpg')
-              }
-            `}{" "}
-            </style>
-            <div id="breadcrumb" className="division">
-                <div className="container">
-                    <div className="row">
-                        <div className="col">
-                            <div className="breadcrumb-holder">
-                                <nav aria-label="breadcrumb">
-                                    <ol className="breadcrumb">
-                                        <li className="breadcrumb-item">
-                                            <Link href={route("home")}>
-                                                Home
-                                            </Link>
-                                        </li>
-                                        <li className="breadcrumb-item">
-                                            <Link href={route("data")}>
-                                                Data
-                                            </Link>
-                                        </li>
-                                        <li
-                                            className="breadcrumb-item active"
-                                            aria-current="page"
-                                        >
-                                            Data Pakar
-                                        </li>
-                                    </ol>
-                                </nav>
-
-                                <h4 className="h4-sm steelblue-color">
-                                    Data Pakar
-                                </h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <BreadCrumb
+                title="Data"
+                subtitle="Data Pakar"
+                link={route("data")}
+            />
 
             <div
                 id="single-blog-page"
