@@ -147,7 +147,10 @@ class FrontController extends Controller
             $rulebaseTemps = RulebaseTemp::IsOwned()
                 ->where('symptom_id', $request->symptom_id)
                 ->where('value', true)
-                ->delete();
+                ->get();
+            foreach ($rulebaseTemps as $key => $rulebaseTemp) {
+                RulebaseTemp::IsOwned()->where('disease_id', $rulebaseTemp->disease_id)->delete();
+            }
 
             $rulebaseTemps2 = RulebaseTemp::IsOwned()->get();
             if ($rulebaseTemps2->count() > 0) {
