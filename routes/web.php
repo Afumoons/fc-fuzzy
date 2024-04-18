@@ -25,8 +25,8 @@ Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/data', [FrontController::class, 'data'])->name('data');
 Route::get('/riwayat', [FrontController::class, 'history'])->name('history');
 Route::get('/diagnosis', [FrontController::class, 'diagnosis'])->name('diagnosis')->middleware(['auth', 'verified']);
-Route::post('/diagnosing', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post')->middleware(['auth', 'verified']);
-Route::post('/diagnosing2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2')->middleware(['auth', 'verified']);
+Route::post('/mendiagnosis', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post')->middleware(['auth', 'verified']);
+Route::post('/mendiagnosis2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2')->middleware(['auth', 'verified']);
 Route::get('/hasil-diagnosis/{rulebaseHistory?}', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult')->middleware(['auth', 'verified']);
 
 Route::get('test', function () {
@@ -47,6 +47,10 @@ Route::prefix('/admin')->middleware(['can:isAdmin'])->name('admin.')->group(func
 
     /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
     Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/admin_routes/symptom.php');
+    /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
+
+    /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
+    Route::prefix('/rulebaseHistory')->name('rulebaseHistory.')->group(__DIR__ . '/admin_routes/rulebaseHistory.php');
     /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
 });
 /* ################### END : ADMIN ROUTE HERE #################### */

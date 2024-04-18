@@ -2,6 +2,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import DashboardCard from "@/Components/DashboardCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 export default function Dashboard({
     auth,
@@ -23,8 +25,8 @@ export default function Dashboard({
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="row p-3">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
+                        <div className="row">
                             <DashboardCard
                                 color="primary"
                                 count={dashboardCounts.symptomsCount}
@@ -46,7 +48,8 @@ export default function Dashboard({
                                 text="Jumlah Admin"
                             />
                         </div>
-                        <div className="row p-4 table-responsive">
+                        <h4 className="mt-4 mb-2">Data Riwayat Diagnosis</h4>
+                        <div className="row table-responsive">
                             <table className="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
@@ -75,15 +78,36 @@ export default function Dashboard({
                                                         : "Tidak ditemukan"}
                                                 </td>
                                                 <td>
-                                                    <Link
-                                                        href={route(
-                                                            "diagnosisResult",
-                                                            [rulebaseHistory]
-                                                        )}
-                                                        className="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                                    >
-                                                        Lihat
-                                                    </Link>
+                                                    <div className="flex justify-around">
+                                                        <Link
+                                                            href={route(
+                                                                "diagnosisResult",
+                                                                [
+                                                                    rulebaseHistory,
+                                                                ]
+                                                            )}
+                                                            className="badge bg-primary text-decoration-none p-2"
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={faEye}
+                                                            />
+                                                        </Link>
+                                                        <Link
+                                                            href={route(
+                                                                "admin.rulebaseHistory.destroy",
+                                                                {
+                                                                    rulebaseHistory,
+                                                                }
+                                                            )}
+                                                            className="badge bg-danger text-decoration-none p-2"
+                                                        >
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faTrashCan
+                                                                }
+                                                            />
+                                                        </Link>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )
