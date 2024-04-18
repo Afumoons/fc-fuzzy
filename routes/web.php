@@ -27,7 +27,7 @@ Route::get('/riwayat', [FrontController::class, 'history'])->name('history');
 Route::get('/diagnosis', [FrontController::class, 'diagnosis'])->name('diagnosis')->middleware(['auth', 'verified']);
 Route::post('/diagnosing', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post')->middleware(['auth', 'verified']);
 Route::post('/diagnosing2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2')->middleware(['auth', 'verified']);
-Route::get('/hasil-diagnosis', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult')->middleware(['auth', 'verified']);
+Route::get('/hasil-diagnosis/{rulebaseHistory?}', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult')->middleware(['auth', 'verified']);
 
 Route::get('test', function () {
     dd('gatau');

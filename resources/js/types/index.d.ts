@@ -36,6 +36,14 @@ export interface UserInput {
     symptom: Symptom;
 }
 
+export interface RulebaseHistory {
+    id: number;
+    user_id: number;
+    disease_id: number;
+    user: User;
+    disease: Disease;
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;
@@ -56,4 +64,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     rulebases: Array<Rulebase>;
     userInput: UserInput;
     userInputs: Array<UserInput>;
+    rulebaseHistory: RulebaseHistory;
+    rulebaseHistorys: Array<RulebaseHistory>;
 };

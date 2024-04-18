@@ -175,31 +175,42 @@ class FrontController extends Controller
                 }
             } else {
                 result:
-                return to_route('diagnosisResult', ['disease' => true])->with('duar', true);
+                return to_route('diagnosisResult');
             }
         }
     }
 
-    function diagnosisResult()
+    function diagnosisResult(RulebaseHistory $rulebaseHistory = null)
     {
-        $rulebaseTemps = RulebaseTemp::isOwned()->get();
+        if (empty($rulebaseHistory)) {
+            $rulebaseTemps = RulebaseTemp::isOwned()->get();
 
-        $diseaseIds = $rulebaseTemps->pluck('disease_id')->unique();
-        if ($diseaseIds->count() > 1) {
-            $disease = null;
+            $diseaseIds = $rulebaseTemps->pluck('disease_id')->unique();
+            if ($diseaseIds->count() > 1) {
+                $disease = null;
+            } else {
+                $disease = RulebaseTemp::IsOwned()->where('value', true)->first()?->disease;
+            }
+
+            RulebaseHistory::create([
+                'user_id' => Auth::user()->id,
+                'disease_id' => $disease->id ?? null,
+            ]);
         } else {
-            $disease = RulebaseTemp::IsOwned()->where('value', true)->first()?->disease;
+            $disease = $rulebaseHistory->disease;
         }
-
-        RulebaseHistory::create([
-            'user_id' => Auth::user()->id,
-            'disease_id' => $disease->id ?? null,
-        ]);
 
         // UserInput::IsOwned()->delete();
         return Inertia::render('Diagnosis', [
             'disease' => $disease,
             'userInputs' => UserInput::IsOwned()->with('symptom')->get(),
+        ]);
+    }
+
+    function history()
+    {
+        return Inertia::render('History', [
+            'rulebaseHistorys' => RulebaseHistory::with('user', 'disease')->get(),
         ]);
     }
 }

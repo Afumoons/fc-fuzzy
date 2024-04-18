@@ -1,6 +1,5 @@
 import { useState, PropsWithChildren, ReactNode, useEffect } from "react";
 import { User } from "@/types";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import "../../../public/css/bootstrap.min.css";
 import "../../../public/css/flaticon.css";
 import "../../../public/css/menu.css";
