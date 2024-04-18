@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\FrontController;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +17,17 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
+Route::get('/whatsapp', function () {
+    return Inertia::location("https://wa.me/+6287744554566");
+})->name('whatsapp');
+
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/data', [FrontController::class, 'data'])->name('data');
+Route::get('/riwayat', [FrontController::class, 'history'])->name('history');
+Route::get('/diagnosis', [FrontController::class, 'diagnosis'])->name('diagnosis')->middleware(['auth', 'verified']);
+Route::post('/diagnosing', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post')->middleware(['auth', 'verified']);
+Route::post('/diagnosing2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2')->middleware(['auth', 'verified']);
+Route::get('/hasil-diagnosis', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult')->middleware(['auth', 'verified']);
 
 Route::get('test', function () {
     dd('gatau');

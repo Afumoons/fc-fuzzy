@@ -2,7 +2,7 @@ import { Link, Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
 
-export default function Home({
+export default function Data({
     auth,
     isAdmin,
     symptoms,

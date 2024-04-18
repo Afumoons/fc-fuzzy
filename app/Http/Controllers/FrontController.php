@@ -6,10 +6,14 @@ use Inertia\Inertia;
 use App\Models\Disease;
 use App\Models\Symptom;
 use App\Models\Rulebase;
+use App\Models\RulebaseTemp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\RulebaseHistory;
+use App\Models\UserInput;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
@@ -31,6 +35,168 @@ class FrontController extends Controller
             'diseases' => Disease::with('rulebases')->get(),
             'symptoms' => Symptom::get(),
             'rulebases' => Rulebase::get(),
+        ]);
+    }
+
+    function diagnosis()
+    {
+        $rulebases = Rulebase::get();
+        RulebaseTemp::IsOwned()->delete();
+        UserInput::isOwned()->delete();
+
+        foreach ($rulebases as $key => $rulebase) {
+            RulebaseTemp::create([
+                'user_id' => Auth::user()->id,
+                'disease_id' => $rulebase->disease_id,
+                'symptom_id' => $rulebase->symptom_id,
+                'value' => $rulebase->value,
+            ]);
+        }
+
+        $no = 0;
+        $rule = array();
+        $diseases = Disease::get();
+        foreach ($diseases as $key => $disease) {
+            $nox = $no++;
+            $xx = 0;
+            $disease_id = $disease->id;
+            $rule2 = array();
+            $rulebases = Rulebase::where('disease_id', $disease->id)->where('value', true)->get();
+            foreach ($rulebases as $key => $rulebase) {
+                $xxx = $xx++;
+                array_push($rule2, $rulebase->symptom->code);
+            }
+
+            array_push($rule, $rule2);
+        }
+
+        $symptom = Symptom::where('code', $rule[0][0])->first();
+
+        // dd($request->all(), $rulebaseTemps, $rule, $symptom);
+        return Inertia::render('Diagnosing', [
+            'symptom' => $symptom,
+        ]);
+    }
+
+    function diagnosingPost(Request $request)
+    {
+        return $this->diagnosing($request);
+    }
+
+    function diagnosingPost2(Request $request)
+    {
+        return $this->diagnosing($request, false);
+    }
+
+    function diagnosing(Request $request, $odd = true)
+    {
+        $request['value'] = $request->value == "true" ? true : false;
+
+        $cek = UserInput::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
+        if (empty($cek[0])) {
+            UserInput::create([
+                'user_id' => Auth::user()->id,
+                'symptom_id' => $request->symptom_id,
+                'value' => $request->value == "true" ? 1 : 0,
+            ]);
+        }
+
+        // if ya
+        if ($request->value) {
+            $diseasesArray = [];
+            $rulebaseTemps = RulebaseTemp::IsOwned()
+                ->where('symptom_id', $request->symptom_id)
+                ->where('value', true)
+                ->get();
+
+            foreach ($rulebaseTemps as $key => $rulebaseTemp) {
+                $diseasesArray[$key] =  $rulebaseTemp->disease_id;
+            }
+
+            // hapus yang tidak punya symptom_id -> true
+            RulebaseTemp::IsOwned()->whereNotIn('disease_id', $diseasesArray)->delete();
+
+            // hapus semua yang value false
+            RulebaseTemp::IsOwned()->where('value', false)->delete();
+
+            $symptomArray = [];
+            foreach (UserInput::IsOwned()->where('value', true)->get() as $key => $userInput) {
+                $symptomArray[$key] = $userInput->symptom_id;
+            }
+
+            // cek apa ada yang belum di diagnosis
+            $rulebaseTemp2 = RulebaseTemp::IsOwned()->whereNotIn('symptom_id', $symptomArray)->get();
+            // dd($rulebaseTemp2, $symptomArray);
+            if (empty($rulebaseTemp2[0])) {
+                return to_route('diagnosisResult', ['disease' => true])->with('duar', true);
+            } else {
+                if ($odd) {
+                    return Inertia::render('Diagnosing', [
+                        'symptom' => $rulebaseTemp2[0]->symptom,
+                    ]);
+                } else {
+                    return Inertia::render('Diagnosing2', [
+                        'symptom' => $rulebaseTemp2[0]->symptom,
+                    ]);
+                }
+            }
+
+            //if tidak
+        } else {
+            // hapus yang symptom_id true
+            $rulebaseTemps = RulebaseTemp::IsOwned()
+                ->where('symptom_id', $request->symptom_id)
+                ->where('value', true)
+                ->delete();
+
+            $rulebaseTemps2 = RulebaseTemp::IsOwned()->get();
+            if ($rulebaseTemps2->count() > 0) {
+                $symptomArray = [];
+                foreach (UserInput::IsOwned()->get() as $key => $userInput) {
+                    $symptomArray[$key] = $userInput->symptom_id;
+                }
+
+                $rulebaseTemp = RulebaseTemp::whereNotIn('symptom_id', $symptomArray)->where('value', true)->first();
+                if ($rulebaseTemp) {
+                    if ($odd) {
+                        return Inertia::render('Diagnosing', [
+                            'symptom' => $rulebaseTemp->symptom,
+                        ]);
+                    } else {
+                        return Inertia::render('Diagnosing2', [
+                            'symptom' => $rulebaseTemp->symptom,
+                        ]);
+                    }
+                } else {
+                    goto result;
+                }
+            } else {
+                result:
+                return to_route('diagnosisResult', ['disease' => true])->with('duar', true);
+            }
+        }
+    }
+
+    function diagnosisResult()
+    {
+        $rulebaseTemps = RulebaseTemp::isOwned()->get();
+
+        $diseaseIds = $rulebaseTemps->pluck('disease_id')->unique();
+        if ($diseaseIds->count() > 1) {
+            $disease = null;
+        } else {
+            $disease = RulebaseTemp::IsOwned()->where('value', true)->first()?->disease;
+        }
+
+        RulebaseHistory::create([
+            'user_id' => Auth::user()->id,
+            'disease_id' => $disease->id ?? null,
+        ]);
+
+        // UserInput::IsOwned()->delete();
+        return Inertia::render('Diagnosis', [
+            'disease' => $disease,
+            'userInputs' => UserInput::IsOwned()->with('symptom')->get(),
         ]);
     }
 }

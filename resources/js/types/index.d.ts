@@ -28,6 +28,14 @@ export interface Rulebase {
     value: boolean;
 }
 
+export interface UserInput {
+    id: number;
+    user_id: number;
+    symptom_id: number;
+    value: boolean;
+    symptom: Symptom;
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;
@@ -46,4 +54,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     symptoms: Array<Symptom>;
     rulebase: Rulebase;
     rulebases: Array<Rulebase>;
+    userInput: UserInput;
+    userInputs: Array<UserInput>;
 };

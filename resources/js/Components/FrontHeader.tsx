@@ -35,11 +35,15 @@ export default function FrontHeader({
                     <div className="headertopleft">
                         <div className="address clearfix">
                             <span>
-                                <i className="fas fa-map-marker-alt"></i>121
-                                King St, Melbourne, VIC 3000
+                                <i className="fas fa-map-marker-alt"></i>UPN
+                                Veteran Jatim
                             </span>
-                            <Link href="tel:12345" className="callusbtn">
-                                <i className="fas fa-phone"></i>(800)-569-7890
+                            <Link
+                                href={route("whatsapp")}
+                                className="callusbtn"
+                            >
+                                <i className="fas fa-phone"></i>
+                                087744554566
                             </Link>
                         </div>
                     </div>
@@ -90,13 +94,13 @@ export default function FrontHeader({
                                 <Link href={route("home")}>Home</Link>
                             </li>
                             <li className="nl-simple" aria-haspopup="true">
-                                <Link href="#">Riwayat</Link>
+                                <Link href={route("history")}>Riwayat</Link>
                             </li>
                             <li className="nl-simple" aria-haspopup="true">
                                 <Link href={route("data")}>Data</Link>
                             </li>
                             <li className="nl-simple" aria-haspopup="true">
-                                <Link href="#">Diagnostik</Link>
+                                <Link href={route("diagnosis")}>Diagnosis</Link>
                             </li>
 
                             <li
