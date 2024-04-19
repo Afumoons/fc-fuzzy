@@ -21,6 +21,18 @@ Route::get('/whatsapp', function () {
     return Inertia::location("https://wa.me/+6287744554566");
 })->name('whatsapp');
 
+Route::get('/mail', function () {
+    return Inertia::location("mailto:afumoons@gmail.com");
+})->name('mail');
+
+Route::get('/github', function () {
+    return Inertia::location("https://github.com/afumoons");
+})->name('github');
+
+Route::get('/whatsapp', function () {
+    return Inertia::location("https://wa.me/+6287744554566");
+})->name('whatsapp');
+
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/data', [FrontController::class, 'data'])->name('data');
 Route::get('/riwayat', [FrontController::class, 'history'])->name('history');

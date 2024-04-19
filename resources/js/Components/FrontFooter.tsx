@@ -1,6 +1,10 @@
 import { Link } from "@inertiajs/react";
 
-export default function FrontFooter({ classNameName = "", ...props }) {
+interface FrontFooterProps {
+    imageLink?: string;
+}
+
+export default function FrontFooter({ imageLink, ...props }: FrontFooterProps) {
     return (
         <footer id="footer-1" className="wide-40 footer division">
             <div className="container">
@@ -8,15 +12,19 @@ export default function FrontFooter({ classNameName = "", ...props }) {
                     <div className="col-md-6 col-lg-3">
                         <div className="footer-info mb-40">
                             <img
-                                src="images/footer-logo.png"
+                                src={
+                                    imageLink
+                                        ? imageLink
+                                        : "images/footer-logo.png"
+                                }
                                 width="180"
                                 height="40"
                                 alt="footer-logo"
                             ></img>
 
                             <p className="p-sm mt-20">
-                                Aliquam orci nullam tempor sapien gravida donec
-                                an enim ipsum porta justo at velna auctor congue
+                                Aplikasi Pra Diagnosis Penyakit Kulit
+                                Menggunakan Forward Chaining dan Fuzzy
                             </p>
 
                             <div className="footer-socials-links mt-20">
@@ -31,7 +39,7 @@ export default function FrontFooter({ classNameName = "", ...props }) {
                                             <i className="fab fa-twitter"></i>
                                         </Link>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link
                                             href="#"
                                             className="ico-google-plus"
@@ -54,7 +62,7 @@ export default function FrontFooter({ classNameName = "", ...props }) {
                                         <Link href="#" className="ico-dribbble">
                                             <i className="fab fa-dribbble"></i>
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <Link
                                             href="#"
@@ -68,7 +76,7 @@ export default function FrontFooter({ classNameName = "", ...props }) {
                                             <i className="fab fa-linkedin-in"></i>
                                         </Link>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link
                                             href="#"
                                             className="ico-pinterest"
@@ -95,7 +103,7 @@ export default function FrontFooter({ classNameName = "", ...props }) {
                                         <Link href="#" className="ico-yahoo">
                                             <i className="fab fa-yahoo"></i>
                                         </Link>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </div>
                         </div>
@@ -103,51 +111,68 @@ export default function FrontFooter({ classNameName = "", ...props }) {
 
                     <div className="col-md-6 col-lg-3">
                         <div className="footer-box mb-40">
-                            <h5 className="h5-xs">Our Location</h5>
+                            <h5 className="h5-xs">Lokasi Kami</h5>
 
-                            <p>121 King Street, Melbourne,</p>
-                            <p>Victoria 3000 Australia</p>
+                            <p>UPN "Veteran" Jawa Timur</p>
 
                             <p className="foo-email mt-20">
                                 E:{" "}
-                                <Link href="mailto:yourdomain@mail.com">
-                                    hello@yourdomain.com
+                                <Link
+                                    className="text-decoration-none"
+                                    href={route("mail")}
+                                >
+                                    afumoons@gmail.com
                                 </Link>
                             </p>
 
-                            <p>P: +12 9 8765 4321</p>
-                        </div>
-                    </div>
-
-                    <div className="col-md-6 col-lg-3">
-                        <div className="footer-box mb-40">
-                            <h5 className="h5-xs">Working Time</h5>
-
-                            <p className="p-sm">
-                                Mon - Wed - <span>9:00 AM - 7:00 PM</span>
-                            </p>
-                            <p className="p-sm">
-                                Thursday - <span>9:00 AM - 6:30 PM</span>
-                            </p>
-                            <p className="p-sm">
-                                Friday - <span>9:00 AM - 6:00 PM</span>
-                            </p>
-                            <p className="p-sm">
-                                Sat - Sun - <span>Closed</span>
+                            <p>
+                                P:{" "}
+                                <Link
+                                    className="text-decoration-none"
+                                    href={route("whatsapp")}
+                                >
+                                    087744554566
+                                </Link>
                             </p>
                         </div>
                     </div>
 
                     <div className="col-md-6 col-lg-3">
                         <div className="footer-box mb-40">
-                            <h5 className="h5-xs">Emergency Cases</h5>
+                            <h5 className="h5-xs">Jam Kerja</h5>
 
-                            <h5 className="h5-xl blue-color">1-800-123-4560</h5>
+                            <p className="p-sm">
+                                Sen - Rab - <span>9:00 AM - 7:00 PM</span>
+                            </p>
+                            <p className="p-sm">
+                                Kamis - <span>9:00 AM - 6:30 PM</span>
+                            </p>
+                            <p className="p-sm">
+                                Jumat - <span>9:00 AM - 6:00 PM</span>
+                            </p>
+                            <p className="p-sm">
+                                Sab - Ming - <span>Tutup</span>
+                            </p>
+                        </div>
+                    </div>
 
-                            <p className="p-sm mt-15">
+                    <div className="col-md-6 col-lg-3">
+                        <div className="footer-box mb-40">
+                            <h5 className="h5-xs">Hubungi Kami</h5>
+
+                            <h5 className="h5-xl blue-color">
+                                <Link
+                                    className="text-decoration-none"
+                                    href={route("whatsapp")}
+                                >
+                                    +6287744554566
+                                </Link>
+                            </h5>
+
+                            {/* <p className="p-sm mt-15">
                                 Aliquam orci nullam undo tempor sapien gravida
                                 donec enim ipsum porta justo velna aucto magna
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 </div>
@@ -156,8 +181,16 @@ export default function FrontFooter({ classNameName = "", ...props }) {
                     <div className="row">
                         <div className="col-md-12">
                             <p className="footer-copyright">
-                                &copy; 2019 <span>MedService</span>. All Rights
-                                Reserved
+                                &copy; 2024{" "}
+                                <span>
+                                    <Link
+                                        className="text-decoration-none"
+                                        href={route("github")}
+                                    >
+                                        Afumoons
+                                    </Link>
+                                </span>
+                                . All Rights Reserved
                             </p>
                         </div>
                     </div>

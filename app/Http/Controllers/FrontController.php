@@ -203,6 +203,7 @@ class FrontController extends Controller
             'disease' => $disease,
             'userInputs' => $userInputs,
             'logoLink' => asset('images/logo-grey.png'),
+            'footerLogoLink' => asset('images/footer-logo.png'),
         ]);
     }
 

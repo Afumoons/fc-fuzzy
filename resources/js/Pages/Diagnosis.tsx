@@ -12,13 +12,20 @@ export default function Diagnosis({
     disease,
     userInputs,
     logoLink,
+    footerLogoLink,
 }: PageProps<{
     laravelVersion: string;
     phpVersion: string;
     logoLink?: string;
+    footerLogoLink?: string;
 }>) {
     return (
-        <HomeLayout user={auth.user} isAdmin={isAdmin} logoLink={logoLink}>
+        <HomeLayout
+            user={auth.user}
+            isAdmin={isAdmin}
+            logoLink={logoLink}
+            footerLogoLink={footerLogoLink}
+        >
             <Head>
                 <title>Data</title>
             </Head>

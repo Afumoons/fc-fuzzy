@@ -18,11 +18,13 @@ export default function HomeLayout({
     children,
     isAdmin,
     logoLink,
+    footerLogoLink,
     loading,
 }: PropsWithChildren<{
     user: User;
     isAdmin: boolean;
     logoLink?: string;
+    footerLogoLink?: string;
     loading?: boolean;
 }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -53,7 +55,7 @@ export default function HomeLayout({
 
                 {children}
 
-                <FrontFooter />
+                <FrontFooter imageLink={footerLogoLink} />
             </div>
         </div>
     );
