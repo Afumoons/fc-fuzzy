@@ -10,6 +10,7 @@ export default function Dashboard({
     isAdmin,
     dashboardCounts,
     rulebaseHistorys,
+    logo,
 }: PageProps) {
     return (
         <AuthenticatedLayout
@@ -20,6 +21,7 @@ export default function Dashboard({
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Dashboard" />
 

@@ -8,6 +8,7 @@ import { PageProps } from "@/types";
 export default function Edit({
     auth,
     isAdmin,
+    logo,
     mustVerifyEmail,
     status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
@@ -20,6 +21,7 @@ export default function Edit({
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Profile" />
 

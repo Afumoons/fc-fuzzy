@@ -12,6 +12,7 @@ import Checkbox from "@mui/material/Checkbox";
 export default function Create({
     auth,
     isAdmin,
+    logo,
     disease,
     symptoms,
 }: PageProps) {
@@ -55,6 +56,7 @@ export default function Create({
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Dashboard" />
 

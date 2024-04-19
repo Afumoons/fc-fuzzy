@@ -12,7 +12,13 @@ export default function Authenticated({
     header,
     children,
     isAdmin,
-}: PropsWithChildren<{ user: User; header?: ReactNode; isAdmin: boolean }>) {
+    logo,
+}: PropsWithChildren<{
+    user: User;
+    header?: ReactNode;
+    isAdmin: boolean;
+    logo: string;
+}>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -24,7 +30,8 @@ export default function Authenticated({
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href={route("home")}>
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
+                                    <img src={logo} className="h-9" alt="" />
                                 </Link>
                             </div>
 
@@ -97,6 +104,7 @@ export default function Authenticated({
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
+                                            className="text-decoration-none"
                                             href={route("profile.edit")}
                                         >
                                             Profile

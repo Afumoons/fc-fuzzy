@@ -7,9 +7,9 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 export default function Index({
     auth,
     isAdmin,
+    logo,
     diseases,
     symptoms,
-    rulebases,
 }: PageProps) {
     return (
         <AuthenticatedLayout
@@ -20,6 +20,7 @@ export default function Index({
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Dashboard" />
 
@@ -31,7 +32,7 @@ export default function Index({
                         </div>
 
                         <div className="mt-3 col-12 table-responsive">
-                            <table className="table table-hover table-striped">
+                            <table className="table table-bordered table-hover table-striped">
                                 <thead>
                                     <tr>
                                         <th scope="col">NO</th>

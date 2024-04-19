@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
+    public function getViewData(array $data = [])
+    {
+        $returned = [
+            'isAdmin' => Gate::allows('isAdmin'),
+            'logo' => asset('images/logo.png'),
+        ];
+        return array_merge($returned, $data);
+    }
+
     function index()
     {
         $symptomsCount = Symptom::get()->count();
@@ -27,10 +36,9 @@ class AdminController extends Controller
             'usersCount' => $usersCount,
             'adminsCount' => $adminsCount,
         ];
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Dashboard', $this->getViewData([
             'dashboardCounts' => $dashboardCounts,
-            'isAdmin' => Gate::allows('isAdmin'),
             'rulebaseHistorys' => RulebaseHistory::with('user', 'disease')->get(),
-        ]);
+        ]));
     }
 }

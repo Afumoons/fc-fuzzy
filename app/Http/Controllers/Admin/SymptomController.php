@@ -18,10 +18,9 @@ class SymptomController extends Controller
     public function index()
     {
         $symptoms = Symptom::get();
-        return Inertia::render('Admin/Symptom/Index', [
+        return Inertia::render('Admin/Symptom/Index', (new AdminController)->getViewData([
             'symptoms' => $symptoms,
-            'isAdmin' => Gate::allows('isAdmin'),
-        ]);
+        ]));
     }
 
     /**
@@ -29,9 +28,7 @@ class SymptomController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Symptom/Create', [
-            'isAdmin' => Gate::allows('isAdmin'),
-        ]);
+        return Inertia::render('Admin/Symptom/Create', (new AdminController)->getViewData());
     }
 
     /**
@@ -50,10 +47,9 @@ class SymptomController extends Controller
      */
     public function edit(Symptom $symptom)
     {
-        return Inertia::render('Admin/Symptom/Edit', [
-            'isAdmin' => Gate::allows('isAdmin'),
+        return Inertia::render('Admin/Symptom/Edit', (new AdminController)->getViewData([
             'symptom' => $symptom,
-        ]);
+        ]));
     }
     /**
      * Update the specified resource in storage.

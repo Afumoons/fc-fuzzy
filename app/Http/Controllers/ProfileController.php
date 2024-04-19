@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\AdminController;
 use Inertia\Response;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
@@ -20,11 +21,10 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
+        return Inertia::render('Profile/Edit', (new AdminController)->getViewData([
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'isAdmin' => Gate::allows('isAdmin'),
-        ]);
+        ]));
     }
 
     /**

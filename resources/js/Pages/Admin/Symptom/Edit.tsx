@@ -7,7 +7,7 @@ import { FormEventHandler } from "react";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Edit({ auth, isAdmin, symptom }: PageProps) {
+export default function Edit({ auth, isAdmin, symptom, logo }: PageProps) {
     const { data, setData, post, processing, errors, reset } = useForm({
         code: symptom.code,
         name: symptom.name,
@@ -28,6 +28,7 @@ export default function Edit({ auth, isAdmin, symptom }: PageProps) {
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Dashboard" />
 

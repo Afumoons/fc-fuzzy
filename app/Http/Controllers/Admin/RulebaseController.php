@@ -24,12 +24,11 @@ class RulebaseController extends Controller
             $rulebases;
         }])->get();
         $rulebases = Rulebase::get();
-        return Inertia::render('Admin/Rulebase/Index', [
+        return Inertia::render('Admin/Rulebase/Index', (new AdminController)->getViewData([
             'diseases' => $diseases,
             'symptoms' => $symptoms,
             'rulebases' => $rulebases,
-            'isAdmin' => Gate::allows('isAdmin'),
-        ]);
+        ]));
     }
 
     /**
@@ -40,11 +39,10 @@ class RulebaseController extends Controller
         $disease = Disease::with('rulebases')->findOrFail($disease->id);
 
         $symptoms = Symptom::get();
-        return Inertia::render('Admin/Rulebase/Edit', [
-            'isAdmin' => Gate::allows('isAdmin'),
+        return Inertia::render('Admin/Rulebase/Edit', (new AdminController)->getViewData([
             'disease' => $disease,
             'symptoms' => $symptoms,
-        ]);
+        ]));
     }
 
     /**

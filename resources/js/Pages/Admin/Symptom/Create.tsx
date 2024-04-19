@@ -7,7 +7,7 @@ import { FormEventHandler } from "react";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function Create({ auth, isAdmin }: PageProps) {
+export default function Create({ auth, isAdmin, logo }: PageProps) {
     const { data, setData, post, processing, errors, reset } = useForm({
         code: "",
         name: "",
@@ -28,6 +28,7 @@ export default function Create({ auth, isAdmin }: PageProps) {
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Dashboard" />
 

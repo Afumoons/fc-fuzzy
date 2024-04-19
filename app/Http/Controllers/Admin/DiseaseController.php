@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Gate;
-use App\Models\User;
-use App\Models\Symptom;
 use App\Models\Disease;
 use App\Http\Requests\Admin\UpdateDiseaseRequest;
 use App\Http\Requests\Admin\StoreDiseaseRequest;
 use App\Http\Controllers\Controller;
-use Inertia\Response;
 
 class DiseaseController extends Controller
 {
@@ -20,10 +17,9 @@ class DiseaseController extends Controller
     public function index()
     {
         $diseases = Disease::get();
-        return Inertia::render('Admin/Disease/Index', [
+        return Inertia::render('Admin/Disease/Index', (new AdminController)->getViewData([
             'diseases' => $diseases,
-            'isAdmin' => Gate::allows('isAdmin'),
-        ]);
+        ]));
     }
 
     /**
@@ -31,9 +27,7 @@ class DiseaseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Disease/Create', [
-            'isAdmin' => Gate::allows('isAdmin'),
-        ]);
+        return Inertia::render('Admin/Disease/Create', (new AdminController)->getViewData());
     }
 
     /**
@@ -52,10 +46,10 @@ class DiseaseController extends Controller
      */
     public function edit(Disease $disease)
     {
-        return Inertia::render('Admin/Disease/Edit', [
+        return Inertia::render('Admin/Disease/Edit', (new AdminController)->getViewData([
             'isAdmin' => Gate::allows('isAdmin'),
             'disease' => $disease,
-        ]);
+        ]));
     }
 
     /**

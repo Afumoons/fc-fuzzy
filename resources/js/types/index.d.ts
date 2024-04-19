@@ -55,6 +55,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         adminsCount: number;
     };
     isAdmin: boolean;
+    logo: string;
     users: Array<User>;
     disease: Disease;
     diseases: Array<Disease>;

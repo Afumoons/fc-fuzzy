@@ -4,7 +4,7 @@ import { PageProps } from "@/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-export default function Index({ auth, isAdmin, symptoms }: PageProps) {
+export default function Index({ auth, isAdmin, symptoms, logo }: PageProps) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -14,6 +14,7 @@ export default function Index({ auth, isAdmin, symptoms }: PageProps) {
                 </h2>
             }
             isAdmin={isAdmin}
+            logo={logo}
         >
             <Head title="Dashboard" />
 
@@ -33,7 +34,7 @@ export default function Index({ auth, isAdmin, symptoms }: PageProps) {
                         </div>
                         {symptoms[0] ? (
                             <div className="mt-3 col-12 table-responsive">
-                                <table className="table table-hover table-striped">
+                                <table className="table table-bordered table-hover table-striped">
                                     <thead>
                                         <tr>
                                             <th scope="col">NO</th>
