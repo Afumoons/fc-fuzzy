@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\FuzzyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,16 +37,21 @@ Route::get('/whatsapp', function () {
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/data', [FrontController::class, 'data'])->name('data');
 Route::get('/riwayat', [FrontController::class, 'history'])->name('history');
-Route::get('/diagnosis', [FrontController::class, 'diagnosis'])->name('diagnosis')->middleware(['auth', 'verified']);
-Route::post('/mendiagnosis', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post')->middleware(['auth', 'verified']);
-Route::post('/mendiagnosis2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2')->middleware(['auth', 'verified']);
-Route::get('/hasil-diagnosis/{rulebaseHistory?}', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult')->middleware(['auth', 'verified']);
+Route::get('/fuzzy', [FuzzyController::class, 'index'])->name('fuzzy');
 
 Route::get('test', function () {
     dd('gatau');
 });
 
-Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard')->middleware(['auth', 'verified']);
+/* ################### BEGIN : AUTHENTICATED USER ROUTE HERE #################### */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/diagnosis', [FrontController::class, 'diagnosis'])->name('diagnosis');
+    Route::post('/mendiagnosis', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post');
+    Route::post('/mendiagnosis2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2');
+    Route::get('/hasil-diagnosis/{rulebaseHistory?}', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult');
+});
+/* ################### EBD : AUTHENTICATED USER ROUTE HERE #################### */
 
 /* ################### BEGIN : ADMIN ROUTE HERE #################### */
 Route::prefix('/admin')->middleware(['can:isAdmin'])->name('admin.')->group(function () {
