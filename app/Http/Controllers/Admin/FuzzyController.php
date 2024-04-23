@@ -106,6 +106,7 @@ class FuzzyController extends Controller
             "G3" => 0.5,
         ];
 
+        dd($this->getAttributes(["G1", "G2"], ["1", "2", "3", "4"]));
 
         // Evaluasi aturan Fuzzy Sugeno
         $aktivasiAturan = [];
@@ -191,5 +192,81 @@ class FuzzyController extends Controller
                 return 0.0;
             }
         }
+    }
+
+    function getAttributes($hurufs, $angkas)
+    {
+        $huruf = [];
+        $hurufInputan = $hurufs;
+        $totalHuruf = count($hurufInputan);
+        for ($churuf = 1; $churuf <= $totalHuruf; $churuf++) {
+            $huruf[$churuf] = $hurufInputan[$churuf - 1];
+        }
+        $angka = [];
+        foreach ($angkas as $key => $angkaArg) {
+            $angka[$key + 1] = $angkaArg;
+        }
+        $ctemp = 0;
+        $temp = [];
+        for ($ctemp = 1; $ctemp <= $totalHuruf; $ctemp++) {
+            $temp[$ctemp] = 1;
+        }
+        // dd($temp);
+
+        $dataPembungkus = [];
+        $countDataPembungkus = 0;
+        while ($temp[1] <= count($angka)) {
+            $churuf = 0;
+            $data = [];
+            while ($churuf < $totalHuruf) {
+                $churuf++;
+                $duar = $temp[$churuf];
+
+                echo "$huruf[$churuf]";
+                echo " => ";
+                echo "$angka[$duar]";
+                echo "\n";
+                $data[$huruf[$churuf]] = $angka[$duar];
+            }
+            echo " <br> ";
+            $dataPembungkus[$countDataPembungkus] = $data;
+            $countDataPembungkus++;
+
+            $temp[$totalHuruf] = $temp[$totalHuruf] + 1;
+            $ctemp = $totalHuruf;
+            // dd($temp, $ctemp);
+            while ($ctemp != 1) {
+                if ($temp[$ctemp] > 3) {
+                    $temp[$ctemp] = 1;
+                    $temp[$ctemp - 1] = $temp[$ctemp - 1] + 1;
+                }
+                $ctemp = $ctemp - 1;
+            }
+        }
+        dd($dataPembungkus);
+
+        // $dataPembungkus = [];
+        // $temp = [];
+        // foreach ($hurufs as $key => $symptom) {
+        //     $temp[$key] = 0;
+        // }
+        // foreach ($angkas as $key => $statement) {
+        //     $data = [];
+        //     foreach ($hurufs as $key2 => $symptom) {
+        //         $duar = $temp[$key2];
+        //         echo "$hurufs[$key2]";
+        //         echo "=>";
+        //         echo "$angkas[$duar]";
+        //         echo "\n";
+        //         $data[$symptom] = $angkas[$temp[$key2]];
+        //     }
+        //     $dataPembungkus[$key] = $data;
+        //     // dd($data);
+        //     foreach ($hurufs as $key3 => $value) {
+        //         # code...
+        //     }
+        // }
+        // // dd($dataPembungkus);
+        // return $dataPembungkus;
     }
 }
