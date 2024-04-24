@@ -50,8 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/mendiagnosis', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post');
     Route::post('/mendiagnosis2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2');
     Route::get('/fuzzy/{disease}', [FrontController::class, 'fuzzy'])->name('fuzzy');
-    Route::post('/pembobotan-fuzzy', [FrontController::class, 'fuzzyingPost'])->name('fuzzy.post');
-    Route::post('/pembobotan-fuzzy2', [FrontController::class, 'fuzzyingPost2'])->name('fuzzy.post2');
+    Route::post('/pembobotan-fuzzy', [FrontController::class, 'fuzzyingPost'])->name('fuzzying.post');
+    Route::post('/pembobotan-fuzzy2', [FrontController::class, 'fuzzyingPost2'])->name('fuzzying.post2');
     Route::get('/hasil-diagnosis/{rulebaseHistory?}', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult');
 });
 /* ################### EBD : AUTHENTICATED USER ROUTE HERE #################### */
