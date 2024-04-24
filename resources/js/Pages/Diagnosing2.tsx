@@ -41,7 +41,7 @@ export default function Diagnosing2({
 
             <BreadCrumb
                 title="Diagnosis"
-                subtitle="Diagnosis Penyakit2"
+                subtitle="Diagnosis Penyakit"
                 link={route("diagnosis")}
             />
 

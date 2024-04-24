@@ -14,15 +14,23 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+    public function getViewData(array $data = [])
+    {
+        $returned = [
+            'logo' => asset('images/logo.png'),
+        ];
+        return array_merge($returned, $data);
+    }
+
     /**
      * Display the login view.
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
+        return Inertia::render('Auth/Login', $this->getViewData([
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
-        ]);
+        ]));
     }
 
     /**

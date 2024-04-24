@@ -21,10 +21,10 @@ class NewPasswordController extends Controller
      */
     public function create(Request $request): Response
     {
-        return Inertia::render('Auth/ResetPassword', [
+        return Inertia::render('Auth/ResetPassword', (new AuthenticatedSessionController)->getViewData([
             'email' => $request->email,
             'token' => $request->route('token'),
-        ]);
+        ]));
     }
 
     /**
