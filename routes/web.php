@@ -37,7 +37,7 @@ Route::get('/whatsapp', function () {
 Route::get('/', [FrontController::class, 'index'])->name('home');
 Route::get('/data', [FrontController::class, 'data'])->name('data');
 Route::get('/riwayat', [FrontController::class, 'history'])->name('history');
-Route::get('/fuzzy', [FuzzyController::class, 'index'])->name('fuzzy');
+Route::get('/fuzzycoba', [FuzzyController::class, 'index'])->name('fuzzycoba');
 
 Route::get('test', function () {
     dd('gatau');
@@ -49,6 +49,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/diagnosis', [FrontController::class, 'diagnosis'])->name('diagnosis');
     Route::post('/mendiagnosis', [FrontController::class, 'diagnosingPost'])->name('diagnosing.post');
     Route::post('/mendiagnosis2', [FrontController::class, 'diagnosingPost2'])->name('diagnosing.post2');
+    Route::get('/fuzzy/{disease}', [FrontController::class, 'fuzzy'])->name('fuzzy');
+    Route::post('/pembobotan-fuzzy', [FrontController::class, 'fuzzyingPost'])->name('fuzzy.post');
+    Route::post('/pembobotan-fuzzy2', [FrontController::class, 'fuzzyingPost2'])->name('fuzzy.post2');
     Route::get('/hasil-diagnosis/{rulebaseHistory?}', [FrontController::class, 'diagnosisResult'])->name('diagnosisResult');
 });
 /* ################### EBD : AUTHENTICATED USER ROUTE HERE #################### */
