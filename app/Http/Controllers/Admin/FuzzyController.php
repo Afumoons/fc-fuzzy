@@ -244,4 +244,74 @@ class FuzzyController extends Controller
         }
         return $dataPembungkus;
     }
+
+    function getRuleAttributes($symptoms, $statements, $disease)
+    {
+        $huruf = [];
+        $angka = [];
+        $symptomTotal = count($symptoms);
+        $statementTotal = count($statements);
+        foreach ($symptoms as $key => $symptom) {
+            $huruf[$key + 1] = $symptom->code;
+        }
+        foreach ($statements as $key => $statement) {
+            $angka[$key + 1] = $statement;
+        }
+        $temp = [];
+        for ($ctemp = 1; $ctemp <= $symptomTotal; $ctemp++) {
+            $temp[$ctemp] = 1;
+        }
+        // dd($temp);
+
+        $dataPembungkus = [];
+        $countDataPembungkus = 0;
+        while ($temp[1] <= $statementTotal) {
+            $churuf = 0;
+            $data = [];
+            $dataAntecedent = [];
+            $dataConsequent = [];
+            $tingkatKeparahan = 0;
+            $nilaiBanyak = 100 / $symptomTotal;
+            $nilaiSedang = 100 / $symptomTotal / $statementTotal * 2;
+            $nilaiSedikit = 100 / $symptomTotal / $statementTotal;
+            while ($churuf < $symptomTotal) {
+                $churuf++;
+                $duar = $temp[$churuf];
+
+                // echo "$huruf[$churuf]";
+                // echo " => ";
+                // echo "$angka[$duar]";
+                // echo "\n";
+                $dataAntecedent[$huruf[$churuf]] = $angka[$duar];
+                if ($angka[$duar] == "Sedikit") {
+                    $tingkatKeparahan = $tingkatKeparahan + $nilaiSedikit;
+                } else if ($angka[$duar] == "Sedang") {
+                    $tingkatKeparahan = $tingkatKeparahan + $nilaiSedang;
+                } else if ($angka[$duar] == "Banyak") {
+                    $tingkatKeparahan = $tingkatKeparahan + $nilaiBanyak;
+                }
+                // dd($angka[$duar], $tingkatKeparahan);
+            }
+            // dd($nilaiBanyak, $nilaiSedang, $nilaiSedikit);
+            $dataConsequent['Diagnosis'] = $disease;
+            $dataConsequent['TingkatKeparahan'] = $tingkatKeparahan;
+            $data['antecedent'] = $dataAntecedent;
+            $data['consequent'] = $dataConsequent;
+            // echo " <br> ";
+            $dataPembungkus[$countDataPembungkus] = $data;
+            $countDataPembungkus++;
+
+            $temp[$symptomTotal] = $temp[$symptomTotal] + 1;
+            $ctemp = $symptomTotal;
+            // dd($temp, $ctemp);
+            while ($ctemp != 1) {
+                if ($temp[$ctemp] > $statementTotal) {
+                    $temp[$ctemp] = 1;
+                    $temp[$ctemp - 1] = $temp[$ctemp - 1] + 1;
+                }
+                $ctemp = $ctemp - 1;
+            }
+        }
+        return $dataPembungkus;
+    }
 }
