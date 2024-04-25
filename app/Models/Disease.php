@@ -32,4 +32,14 @@ class Disease extends Model
     {
         return $this->hasMany(Rulebase::class, 'disease_id', 'id');
     }
+
+    /**
+     * Get the fuzzyRules that disease own
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function fuzzyRules(): HasMany
+    {
+        return $this->hasMany(FuzzyRule::class, 'disease_id', 'id');
+    }
 }

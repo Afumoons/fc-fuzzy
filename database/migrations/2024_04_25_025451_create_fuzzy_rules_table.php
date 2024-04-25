@@ -2,7 +2,6 @@
 
 use App\Models\User;
 use App\Models\Disease;
-use App\Models\FuzzyTemp;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,14 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fuzzy_rule_temps', function (Blueprint $table) {
+        Schema::create('fuzzy_rules', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'user_id')
+            $table->foreignIdFor(Disease::class, 'disease_id')
                 // ->after('indikator_id')
-                ->nullable()->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignIdFor(FuzzyTemp::class, 'fuzzy_temp_id')
-                // ->after('indikator_id')
-                ->nullable()->constrained('fuzzy_temps')->cascadeOnUpdate()->cascadeOnDelete();
+                ->nullable()->constrained('diseases')->cascadeOnUpdate()->cascadeOnDelete();
             $table->json('data');
             $table->timestamps();
         });
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fuzzy_rule_temps');
+        Schema::dropIfExists('fuzzy_rules');
     }
 };

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             DiseaseSeeder::class,
             SymptomSeeder::class,
             RulebaseSeeder::class,
+            FuzzyRuleSeeder::class,
         ]);
     }
 }

@@ -56,14 +56,4 @@ class FuzzyTemp extends Model
     {
         return $this->belongsTo(Disease::class, 'disease_id', 'id');
     }
-
-    /**
-     * Get the fuzzyRuleTemps that fuzzyTemp owns
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function fuzzyRuleTemps(): HasMany
-    {
-        return $this->hasMany(FuzzyRuleTemp::class, 'fuzzy_temp_id', 'id');
-    }
 }

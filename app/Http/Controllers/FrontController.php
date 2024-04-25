@@ -256,7 +256,7 @@ class FrontController extends Controller
             'membership_data' => $membershipFunctionArray,
         ]);
 
-        (new FuzzyController)->saveRuleAttributes($symptomsArray, $statementsArray, $fuzzyTemp);
+        // (new FuzzyController)->saveRuleAttributes($symptomsArray, $statementsArray, $fuzzyTemp);
 
         $symptom = Symptom::where('id', $symptomsArray[0])->first();
 

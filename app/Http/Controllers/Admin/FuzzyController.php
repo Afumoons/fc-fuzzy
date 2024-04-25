@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Disease;
+use App\Models\FuzzyRule;
 use App\Models\FuzzyTemp;
-use App\Models\FuzzyRuleTemp;
 use App\Models\FuzzyUserInput;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -134,7 +134,7 @@ class FuzzyController extends Controller
         return $dataPembungkus;
     }
 
-    function saveRuleAttributes($symptoms, $statements, $fuzzyTemp): void
+    function saveRuleAttributes($symptoms, $statements, Disease $disease): void
     {
         // dd($symptoms, $statements, $fuzzyTemp);
         $huruf = [];
@@ -181,14 +181,13 @@ class FuzzyController extends Controller
                 // dd($angka[$duar], $tingkatKeparahan);
             }
             // dd($nilaiBanyak, $nilaiSedang, $nilaiSedikit);
-            $dataConsequent['Diagnosis'] = $fuzzyTemp->disease->code;
+            $dataConsequent['Diagnosis'] = $disease->code;
             $dataConsequent['TingkatKeparahan'] = $tingkatKeparahan;
             $data['antecedent'] = $dataAntecedent;
             $data['consequent'] = $dataConsequent;
 
-            FuzzyRuleTemp::create([
-                'user_id' => Auth::user()->id,
-                'fuzzy_temp_id' => $fuzzyTemp->id,
+            FuzzyRule::create([
+                'disease_id' => $disease->id,
                 'data' => $data,
             ]);
 
@@ -304,7 +303,7 @@ class FuzzyController extends Controller
             "P1" => [
                 "gejala" => $symptomsArray,
                 "fungsiKeanggotaan" => $membershipFunctionArray,
-                "aturan" => $fuzzyTemp->fuzzyRuleTemps()->get()->pluck('data')
+                "aturan" => $disease->fuzzyRules->pluck('data')
             ],
         ];
 

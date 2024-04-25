@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\FuzzyTemp;
+use App\Models\Disease;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class FuzzyRuleTemp extends Model
+class FuzzyRule extends Model
 {
     use HasFactory;
 
@@ -19,8 +19,7 @@ class FuzzyRuleTemp extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'fuzzy_temp_id',
+        'disease_id',
         'data',
     ];
 
@@ -34,22 +33,12 @@ class FuzzyRuleTemp extends Model
     }
 
     /**
-     * Get the user that owns the rulebase
+     * Get the disease that owns the rulebase
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function disease(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    /**
-     * Get the fuzzyTemp that owns the rulebase
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function fuzzyTemp(): BelongsTo
-    {
-        return $this->belongsTo(FuzzyTemp::class, 'fuzzy_temp_id', 'id');
+        return $this->belongsTo(Disease::class, 'disease_id', 'id');
     }
 }
