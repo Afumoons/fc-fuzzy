@@ -12,6 +12,7 @@ export default function Fuzzying2({
     symptom,
     logoLink,
     footerLogoLink,
+    statements,
 }: PageProps<{
     laravelVersion: string;
     phpVersion: string;
@@ -67,51 +68,26 @@ export default function Fuzzying2({
                             {symptom.id} - {symptom.code} - {symptom.name} ?
                         </h3>
                         <div className="row my-5 w-100">
-                            <div className="col-md-4 d-flex justify-content-center">
-                                <RadioInput
-                                    id="Radio1"
-                                    type="radio"
-                                    name="value"
-                                    label="Sedikit"
-                                    placeholder="Nama Lengkap"
-                                    isFocused={false}
-                                    defaultChecked={false}
-                                    onChange={(e) =>
-                                        updateFormData(e, "Sedikit")
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div className="col-md-4 d-flex justify-content-center">
-                                <RadioInput
-                                    id="Radio2"
-                                    type="radio"
-                                    name="value"
-                                    label="Sedang"
-                                    placeholder="Nama Lengkap"
-                                    isFocused={false}
-                                    defaultChecked={false}
-                                    onChange={(e) =>
-                                        updateFormData(e, "Sedang")
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div className="col-md-4 d-flex justify-content-center">
-                                <RadioInput
-                                    id="Radio3"
-                                    type="radio"
-                                    name="value"
-                                    label="Banyak"
-                                    placeholder="Nama Lengkap"
-                                    isFocused={false}
-                                    defaultChecked={false}
-                                    onChange={(e) =>
-                                        updateFormData(e, "Banyak")
-                                    }
-                                    required
-                                />
-                            </div>
+                            {statements.map((statement, index) => (
+                                <div
+                                    className="d-flex justify-content-center"
+                                    style={{ flex: 1 }}
+                                    key={statement}
+                                >
+                                    <RadioInput
+                                        id={"Radio" + index}
+                                        type="radio"
+                                        name="value"
+                                        label={statement}
+                                        isFocused={false}
+                                        defaultChecked={false}
+                                        onChange={(e) =>
+                                            updateFormData(e, statement)
+                                        }
+                                        required
+                                    />
+                                </div>
+                            ))}
                         </div>
 
                         <PrimaryButton type="submit" className="d-inline w-50">

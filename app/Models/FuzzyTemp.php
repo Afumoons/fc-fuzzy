@@ -7,6 +7,7 @@ use App\Models\Disease;
 use App\Models\Symptom;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,8 +28,8 @@ class FuzzyTemp extends Model
     ];
 
     protected $casts = [
-        'symptom_data' => 'object',
-        'membership_data' => 'object',
+        'symptom_data' => 'array',
+        'membership_data' => 'array',
     ];
 
     function scopeIsOwned($query)
@@ -54,5 +55,15 @@ class FuzzyTemp extends Model
     public function disease(): BelongsTo
     {
         return $this->belongsTo(Disease::class, 'disease_id', 'id');
+    }
+
+    /**
+     * Get the fuzzyRuleTemps that fuzzyTemp owns
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function fuzzyRuleTemps(): HasMany
+    {
+        return $this->hasMany(FuzzyRuleTemp::class, 'fuzzy_temp_id', 'id');
     }
 }

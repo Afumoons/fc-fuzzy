@@ -36,6 +36,15 @@ export interface UserInput {
     symptom: Symptom;
 }
 
+export interface FuzzyUserInput {
+    id: number;
+    user_id: number;
+    symptom_id: number;
+    fuzzy_history_id: number;
+    value: string;
+    symptom: Symptom;
+}
+
 export interface RulebaseHistory {
     id: number;
     user_id: number;
@@ -65,6 +74,9 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     rulebases: Array<Rulebase>;
     userInput: UserInput;
     userInputs: Array<UserInput>;
+    fuzzyUserInput: FuzzyUserInput;
+    fuzzyUserInputs: Array<FuzzyUserInput>;
     rulebaseHistory: RulebaseHistory;
     rulebaseHistorys: Array<RulebaseHistory>;
+    statements: Array<string>;
 };

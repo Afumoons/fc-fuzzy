@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\Disease;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,10 +21,11 @@ class FuzzyHistory extends Model
     protected $fillable = [
         'user_id',
         'disease_id',
+        'value',
     ];
 
     /**
-     * Get the user that owns the rulebaseHistory
+     * Get the user that owns the fuzzyHistory
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -32,7 +35,7 @@ class FuzzyHistory extends Model
     }
 
     /**
-     * Get the disease that owns the rulebaseHistory
+     * Get the disease that owns the fuzzyHistory
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -42,12 +45,12 @@ class FuzzyHistory extends Model
     }
 
     /**
-     * Get the userInputs that owned by rulebaseHistory
+     * Get the fuzzyUserInputs that owned by fuzzyHistory
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function fuzzyUserInputs(): HasMany
     {
-        return $this->hasMany(UserInput::class, 'rulebase_history_id', 'id');
+        return $this->hasMany(FuzzyUserInput::class, 'fuzzy_history_id', 'id');
     }
 }

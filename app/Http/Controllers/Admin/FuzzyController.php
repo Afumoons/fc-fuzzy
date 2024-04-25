@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Disease;
+use App\Models\FuzzyTemp;
 use App\Models\FuzzyRuleTemp;
+use App\Models\FuzzyUserInput;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class FuzzyController extends Controller
 {
+    public $statementArray = ['Sedikit', 'Sedang', 'Banyak'];
+
     private function getAttributes($hurufs, $angkas)
     {
         $huruf = [];
@@ -286,6 +290,80 @@ class FuzzyController extends Controller
             echo "Diagnosis tidak dapat ditentukan.\n";
         }
         dd($penyakit);
+    }
+
+    function doFuzzy(Disease $disease, FuzzyTemp $fuzzyTemp)
+    {
+        // dd($disease, $fuzzyTemp);
+        $rulebases = $disease->rulebases()->where('value', true)->get();
+        $symptomsArray = $fuzzyTemp->symptom_data;
+        $membershipFunctionArray = $fuzzyTemp->membership_data;
+
+        // Data penyakit dan gejala (dibaca dari database)
+        $penyakit = [
+            "P1" => [
+                "gejala" => $symptomsArray,
+                "fungsiKeanggotaan" => $membershipFunctionArray,
+                "aturan" => $fuzzyTemp->fuzzyRuleTemps()->get()->pluck('data')
+            ],
+        ];
+
+        $inputPasien = [];
+        foreach (FuzzyUserInput::IsOwned()->IsNotDone()->get() as $key => $fuzzyUserInput) {
+            if ($fuzzyUserInput->value == "Sedikit") {
+                $value = 0.5;
+            } else if ($fuzzyUserInput->value == "Sedang") {
+                $value = 1;
+            } else if ($fuzzyUserInput->value == "Banyak") {
+                $value = 1.5;
+            }
+            $inputPasien[$fuzzyUserInput->symptom_id] = $value;
+        }
+
+        // Evaluasi aturan Fuzzy Sugeno
+        $aktivasiAturan = [];
+        foreach ($penyakit as $namaPenyakit => $dataPenyakit) {
+            $aktivasiAturan[$namaPenyakit] = [];
+            foreach ($dataPenyakit["aturan"] as $aturan) {
+                $derajatAktivasi = 1.0;
+                foreach ($aturan["antecedent"] as $gejala => $kategori) {
+                    $derajatKeanggotaanGejala = $this->derajatKeanggotaan(
+                        $inputPasien[$gejala],
+                        $dataPenyakit["fungsiKeanggotaan"][$gejala],
+                        $kategori
+                    );
+                    $derajatAktivasi = min($derajatAktivasi, $derajatKeanggotaanGejala);
+                }
+                // dd($derajatKeanggotaanGejala, $derajatAktivasi);
+                $aktivasiAturan[$namaPenyakit][] = $derajatAktivasi * $aturan["consequent"]["TingkatKeparahan"];
+            }
+        }
+
+        // Agregasi dan defuzzifikasi
+        $diagnosis = "";
+        $tingkatKeparahanTertinggi = 0.0;
+        foreach ($aktivasiAturan as $namaPenyakit => $aktivasiPenyakit) {
+            $totalAktivasi = 0.0;
+            $bobotTotal = 0.0;
+            foreach ($aktivasiPenyakit as $aktivasiAturan2) {
+                $totalAktivasi += $aktivasiAturan2;
+                $bobotTotal += 1.0;
+            }
+
+            if ($bobotTotal > 0.0) {
+                $tingkatKeparahan = $totalAktivasi / $bobotTotal;
+                if ($tingkatKeparahan > $tingkatKeparahanTertinggi) {
+                    $diagnosis = $namaPenyakit;
+                    $tingkatKeparahanTertinggi = $tingkatKeparahan;
+                }
+            }
+        }
+        $tingkatKeparahanTertinggi = $tingkatKeparahanTertinggi * $bobotTotal;
+
+        // dd($this->getAttribute(['G1', 'G2'], ['Sedikit', 'Sedang', 'Banyak']));
+
+        // Hasil diagnosis
+        return $tingkatKeparahanTertinggi ?? 0;
     }
 
     /**

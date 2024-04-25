@@ -25,7 +25,7 @@ class FuzzyRuleTemp extends Model
     ];
 
     protected $casts = [
-        'data' => 'object',
+        'data' => 'array',
     ];
 
     function scopeIsOwned($query)

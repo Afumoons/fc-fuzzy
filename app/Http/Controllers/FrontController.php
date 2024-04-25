@@ -8,6 +8,8 @@ use App\Models\Symptom;
 use App\Models\Rulebase;
 use App\Models\FuzzyTemp;
 use App\Models\UserInput;
+use Illuminate\Support\Arr;
+use App\Models\FuzzyHistory;
 use App\Models\RulebaseTemp;
 use Illuminate\Http\Request;
 use App\Models\FuzzyUserInput;
@@ -17,9 +19,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\Admin\FuzzyController;
+use Illuminate\Support\Number;
 
 class FrontController extends Controller
 {
+    public $statementArray;
+
+    public function __construct()
+    {
+        $this->statementArray = (new FuzzyController)->statementArray;
+    }
+
     public function getViewData(array $data = [])
     {
         $returned = [
@@ -226,14 +236,14 @@ class FrontController extends Controller
 
         $symptomsArray = [];
         $membershipFunctionArray = [];
-        $statementsArray = ['Sedikit', 'Sedang', 'Banyak'];
+        $statementsArray = $this->statementArray;
         foreach ($rulebases as $rulebaseKey => $rulebase) {
             $angka = 0.0;
             $angka2 = 0.5;
             $angka3 = 1.0;
-            $symptomsArray[$rulebaseKey] = $rulebase->symptom->code;
+            $symptomsArray[$rulebaseKey] = $rulebase->symptom->id;
             foreach ($statementsArray as  $statement) {
-                $membershipFunctionArray[$rulebase->symptom->code][$statement] = [$angka, $angka2, $angka3];
+                $membershipFunctionArray[$rulebase->symptom->id][$statement] = [$angka, $angka2, $angka3];
                 $angka = $angka + 0.5;
                 $angka2 = $angka2 + 0.5;
                 $angka3 = $angka3 + 0.5;
@@ -248,11 +258,12 @@ class FrontController extends Controller
 
         (new FuzzyController)->saveRuleAttributes($symptomsArray, $statementsArray, $fuzzyTemp);
 
-        $symptom = Symptom::where('code', $symptomsArray[0])->first();
+        $symptom = Symptom::where('id', $symptomsArray[0])->first();
 
         // dd($request->all(), $rulebaseTemps, $rule, $symptom);
         return Inertia::render('Fuzzying', $this->getViewData([
             'symptom' => $symptom,
+            'statements' => $statementsArray,
         ]));
     }
 
@@ -268,119 +279,89 @@ class FrontController extends Controller
 
     function fuzzying(Request $request, $odd = true)
     {
-        dd($request->all());
-        $request['value'] = $request->value == "true" ? true : false;
 
-        $cek = UserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
+        $cek = FuzzyUserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
         if (empty($cek[0])) {
-            UserInput::create([
+            FuzzyUserInput::create([
                 'user_id' => Auth::user()->id,
                 'symptom_id' => $request->symptom_id,
-                'value' => $request->value == "true" ? 1 : 0,
+                'value' => $request->value,
             ]);
         }
 
-        // if ya
-        if ($request->value) {
-            $diseasesArray = [];
 
-            foreach (RulebaseTemp::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', true)->get() as $key => $rulebaseTemp) {
-                $diseasesArray[$key] =  $rulebaseTemp->disease_id;
-            }
+        $symptomArray = [];
+        foreach (FuzzyUserInput::IsOwned()->IsNotDone()->get() as $key => $userInput) {
+            $symptomArray[$key] = $userInput->symptom_id;
+        }
 
-            // hapus yang tidak punya symptom_id -> true
-            RulebaseTemp::IsOwned()->whereNotIn('disease_id', $diseasesArray)->delete();
+        $symptomData = FuzzyTemp::IsOwned()->first()->symptom_data;
 
-            // hapus semua yang value false
-            RulebaseTemp::IsOwned()->where('value', false)->delete();
-
-            $symptomArray = [];
-            foreach (UserInput::IsOwned()->IsNotDone()->where('value', true)->get() as $key => $userInput) {
-                $symptomArray[$key] = $userInput->symptom_id;
-            }
-
-            // cek apa ada yang belum di diagnosis
-            $rulebaseTemp2 = RulebaseTemp::IsOwned()->whereNotIn('symptom_id', $symptomArray)->get();
-            // dd($rulebaseTemp2, $symptomArray);
-            if (empty($rulebaseTemp2[0])) {
-                return to_route('diagnosisResult', ['disease' => true])->with('duar', true);
-            } else {
-                if ($odd) {
-                    return Inertia::render('Diagnosing', [
-                        'symptom' => $rulebaseTemp2[0]->symptom,
-                    ]);
-                } else {
-                    return Inertia::render('Diagnosing2', [
-                        'symptom' => $rulebaseTemp2[0]->symptom,
-                    ]);
+        // hapus yang sudah terdapat data fuzzyuserinput
+        foreach ($symptomArray as $key => $value) {
+            foreach ($symptomData as $key2 => $value2) {
+                if ($value == $value2) {
+                    Arr::pull($symptomData, $key2);
                 }
             }
+        }
+        // dd($request->all(), $symptomArray, $symptom, Arr::first($symptom));
 
-            //if tidak
+        // cek apa ada yang belum di beri input fuzzy
+        $symptom = Symptom::find(Arr::first($symptomData));
+
+        if ($symptom) {
+            $statementsArray = $this->statementArray;
+            if ($odd) {
+                return Inertia::render('Fuzzying', [
+                    'symptom' => $symptom,
+                    'statements' => $statementsArray,
+                ]);
+            } else {
+                return Inertia::render('Fuzzying2', [
+                    'symptom' => $symptom,
+                    'statements' => $statementsArray,
+                ]);
+            }
+            // dd($request->all(), $symptomArray, $symptomData, $symptom, Arr::first($symptomData));
         } else {
-            // hapus yang symptom_id true
-            foreach (RulebaseTemp::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', true)->get() as $key => $rulebaseTemp) {
-                RulebaseTemp::IsOwned()->where('disease_id', $rulebaseTemp->disease_id)->delete();
-            }
-
-            if (RulebaseTemp::IsOwned()->get()->count() > 0) {
-                $symptomArray = [];
-                foreach (UserInput::IsOwned()->IsNotDone()->get() as $key => $userInput) {
-                    $symptomArray[$key] = $userInput->symptom_id;
-                }
-
-                $rulebaseTemp = RulebaseTemp::whereNotIn('symptom_id', $symptomArray)->where('value', true)->first();
-                if ($rulebaseTemp) {
-                    if ($odd) {
-                        return Inertia::render('Diagnosing', [
-                            'symptom' => $rulebaseTemp->symptom,
-                        ]);
-                    } else {
-                        return Inertia::render('Diagnosing2', [
-                            'symptom' => $rulebaseTemp->symptom,
-                        ]);
-                    }
-                } else {
-                    goto result;
-                }
-            } else {
-                result:
-                return to_route('diagnosisResult');
-            }
+            return to_route('fuzzyResult');
         }
     }
 
-    function fuzzyResult(RulebaseHistory $rulebaseHistory = null)
+    function fuzzyResult(FuzzyHistory $fuzzyHistory = null)
     {
-        if (empty($rulebaseHistory)) {
-            $rulebaseTemps = RulebaseTemp::isOwned()->get();
+        if (empty($fuzzyHistory)) {
+            $fuzzyTemps = FuzzyTemp::isOwned()->get();
 
-            $diseaseIds = $rulebaseTemps->pluck('disease_id')->unique();
+            $diseaseIds = $fuzzyTemps->pluck('disease_id')->unique();
             if ($diseaseIds->count() > 1) {
                 $disease = null;
             } else {
-                $disease = RulebaseTemp::IsOwned()->where('value', true)->first()?->disease;
+                $disease = Disease::find($diseaseIds[0]);
             }
 
-            $rulebaseHistory = RulebaseHistory::create([
+            $fuzzyResult = (new FuzzyController)->doFuzzy($disease, FuzzyTemp::IsOwned()->first());
+
+            $fuzzyHistory = FuzzyHistory::create([
                 'user_id' => Auth::user()->id,
                 'disease_id' => $disease->id ?? null,
+                'value' => $fuzzyResult,
             ]);
-            $userInputs = UserInput::IsOwned()->IsNotDone()->with('symptom')->get();
-            foreach ($userInputs as $key => $userInput) {
-                $userInput->update([
-                    'rulebase_history_id' => $rulebaseHistory->id,
+            $fuzzyUserInputs = FuzzyUserInput::IsOwned()->IsNotDone()->with('symptom')->get();
+            foreach ($fuzzyUserInputs as $key => $fuzzyuserInput) {
+                $fuzzyuserInput->update([
+                    'fuzzy_history_id' => $fuzzyHistory->id,
                 ]);
             }
         } else {
-            $disease = $rulebaseHistory->disease;
-            $userInputs = $rulebaseHistory->userInputs()->with('symptom')->get();
+            $disease = $fuzzyHistory->disease;
+            $fuzzyUserInputs = $fuzzyHistory->fuzzyUserInputs()->with('symptom')->get();
         }
-
-        // UserInput::IsOwned()->IsNotDone()->delete();
-        return Inertia::render('Diagnosis', $this->getViewData([
+        return Inertia::render('Fuzzy', $this->getViewData([
             'disease' => $disease,
-            'userInputs' => $userInputs,
+            'fuzzyUserInputs' => $fuzzyUserInputs,
+            'fuzzyResult' => Number::percentage($fuzzyHistory->value, 1),
         ]));
     }
 

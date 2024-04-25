@@ -26,10 +26,6 @@ class FuzzyUserInput extends Model
         'value',
     ];
 
-    protected $casts = [
-        'value' => 'boolean',
-    ];
-
     function scopeIsOwned($query)
     {
         return $query->where('user_id', Auth::user()->id);
