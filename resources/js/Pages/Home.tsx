@@ -14,7 +14,7 @@ export default function Home({
                 <title>Beranda</title>
             </Head>
 
-            <section id="hero-1" className="bg-fixed hero-section division">
+            <section className="bg-fixed hero-section division">
                 <div className="container">
                     <div className="row d-flex align-items-center">
                         <div className="col-md-8 col-lg-7 col-xl-6">
