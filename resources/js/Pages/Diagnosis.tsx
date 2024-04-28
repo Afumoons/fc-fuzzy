@@ -11,14 +11,19 @@ export default function Diagnosis({
     isAdmin,
     disease,
     userInputs,
+    fuzzyUserInputs,
     logoLink,
     footerLogoLink,
+    fuzzyResult,
 }: PageProps<{
     laravelVersion: string;
     phpVersion: string;
     logoLink?: string;
     footerLogoLink?: string;
+    fuzzyResult?: string;
 }>) {
+    console.log(fuzzyResult);
+
     return (
         <HomeLayout
             user={auth.user}
@@ -46,22 +51,10 @@ export default function Diagnosis({
                     </h3>
                     <h5 className="text-center">
                         Hasil Diagnosis Penyakit Kulit dengan metode forward
-                        chaining.
+                        chaining dan fuzzy.
                     </h5>
                     <div className="card card-body">
                         <table className="table table-bordered table-striped">
-                            <tr>
-                                <td>
-                                    <p className="font-bold">Nama Pengguna</p>
-                                </td>
-                                <td>{auth.user.name}</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p className="font-bold">Email Pengguna</p>
-                                </td>
-                                <td>{auth.user.email}</td>
-                            </tr>
                             <tr>
                                 <td>
                                     <p className="font-bold">
@@ -69,6 +62,7 @@ export default function Diagnosis({
                                     </p>
                                 </td>
                                 <td>
+                                    <h5>Diagnosis</h5>
                                     <ul>
                                         {userInputs.map((userInput) => (
                                             <li
@@ -83,6 +77,30 @@ export default function Diagnosis({
                                             </li>
                                         ))}
                                     </ul>
+                                    <h5 className="mt-3">Pembobotan</h5>
+                                    <ul>
+                                        {fuzzyUserInputs.map(
+                                            (fuzzyUserInput) => (
+                                                <li
+                                                    key={fuzzyUserInput.id}
+                                                    className="list-group-item"
+                                                >
+                                                    {
+                                                        fuzzyUserInput.symptom
+                                                            .code
+                                                    }{" "}
+                                                    -{" "}
+                                                    {
+                                                        fuzzyUserInput.symptom
+                                                            .name
+                                                    }
+                                                    {" ("}
+                                                    {fuzzyUserInput.value}
+                                                    {")"}
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>
@@ -91,7 +109,10 @@ export default function Diagnosis({
                                 </td>
                                 <td>
                                     {disease
-                                        ? disease.code + " - " + disease.name
+                                        ? "Anda kemungkinan menderita " +
+                                          disease.name +
+                                          " sebesar " +
+                                          fuzzyResult
                                         : "Penyakit tidak ditemukan"}
                                 </td>
                             </tr>
@@ -111,7 +132,7 @@ export default function Diagnosis({
                                 </td>
                                 <td>{disease ? disease.solution : "-"}</td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <td>
                                     <p className="font-bold">
                                         Tindakan Lanjutan
@@ -133,7 +154,7 @@ export default function Diagnosis({
                                         Cek sekarang
                                     </Link>
                                 </td>
-                            </tr>
+                            </tr> */}
                         </table>
                     </div>
                 </div>

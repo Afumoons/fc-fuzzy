@@ -2,7 +2,7 @@
 
 use App\Models\User;
 use App\Models\Symptom;
-use App\Models\FuzzyHistory;
+use App\Models\RulebaseHistory;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -22,9 +22,9 @@ return new class extends Migration
             $table->foreignIdFor(Symptom::class, 'symptom_id')
                 // ->after('indikator_id')
                 ->nullable()->constrained('symptoms')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignIdFor(FuzzyHistory::class, 'fuzzy_history_id')
+            $table->foreignIdFor(RulebaseHistory::class, 'rulebase_history_id')
                 // ->after('indikator_id')
-                ->nullable()->constrained('fuzzy_histories')->cascadeOnUpdate()->cascadeOnDelete();
+                ->nullable()->constrained('rulebase_histories')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('value');
             $table->timestamps();
         });

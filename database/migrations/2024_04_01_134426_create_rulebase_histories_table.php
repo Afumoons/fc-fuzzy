@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Disease::class, 'disease_id')
                 // ->after('indikator_id')
                 ->nullable()->constrained('diseases')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('fuzzy_value')->nullable();
             $table->timestamps();
         });
     }

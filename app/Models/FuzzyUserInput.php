@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Symptom;
-use App\Models\FuzzyHistory;
+use App\Models\RulebaseHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +22,7 @@ class FuzzyUserInput extends Model
     protected $fillable = [
         'user_id',
         'symptom_id',
-        'fuzzy_history_id',
+        'rulebase_history_id',
         'value',
     ];
 
@@ -33,7 +33,7 @@ class FuzzyUserInput extends Model
 
     function scopeIsNotDone($query)
     {
-        return $query->where('fuzzy_history_id', null);
+        return $query->where('rulebase_history_id', null);
     }
 
     /**
@@ -57,12 +57,12 @@ class FuzzyUserInput extends Model
     }
 
     /**
-     * Get the fuzzyHistory that owns the fuzzyUserInput
+     * Get the rulebaseHistory that owns the rulebaseUserInput
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function fuzzyHistory(): BelongsTo
+    public function rulebaseHistory(): BelongsTo
     {
-        return $this->belongsTo(FuzzyHistory::class, 'fuzzy_history_id', 'id');
+        return $this->belongsTo(RulebaseHistory::class, 'rulebase_history_id', 'id');
     }
 }
