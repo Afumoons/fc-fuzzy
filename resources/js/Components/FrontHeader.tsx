@@ -80,7 +80,7 @@ export default function FrontHeader({
             <div className="wsmainfull menu clearfix">
                 <div className="wsmainwp clearfix">
                     <div className="desktoplogo">
-                        <Link href="#hero-1">
+                        <Link href={route("home")}>
                             <img
                                 src={
                                     imageLink
