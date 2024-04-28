@@ -44,5 +44,19 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        // if token is invalid, redirect to login page
+        $this->renderable(function (\Exception $e) {
+            if ($e->getPrevious() instanceof \Illuminate\Session\TokenMismatchException) {
+                return redirect()->route('login');
+            };
+        });
+
+        // if unalowed method post, redirect to route home
+        $this->renderable(function (\Exception $e) {
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+                return redirect()->route('home');
+            };
+        });
     }
 }
