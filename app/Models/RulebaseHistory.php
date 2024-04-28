@@ -63,6 +63,6 @@ class RulebaseHistory extends Model
      */
     public function fuzzyUserInputs(): HasMany
     {
-        return $this->hasMany(FuzzyUserInput::class, 'fuzzy_history_id', 'id');
+        return $this->hasMany(FuzzyUserInput::class, 'rulebase_history_id', 'id');
     }
 }

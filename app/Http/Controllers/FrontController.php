@@ -242,7 +242,7 @@ class FrontController extends Controller
         } else {
             $disease = $rulebaseHistory->disease;
             $userInputs = $rulebaseHistory->userInputs()->with('symptom')->get();
-            $userInputs = $rulebaseHistory->fuzzyUserInputs()->with('symptom')->get();
+            $fuzzyUserInputs = $rulebaseHistory->fuzzyUserInputs()->with('symptom')->get();
         }
 
         // UserInput::IsOwned()->IsNotDone()->delete();
