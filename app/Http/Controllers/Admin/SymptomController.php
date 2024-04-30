@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Symptom;
-use App\Http\Requests\Admin\UpdateSymptomRequest;
-use App\Http\Requests\Admin\StoreSymptomRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Requests\Admin\StoreSymptomRequest;
+use App\Http\Requests\Admin\UpdateSymptomRequest;
 
 class SymptomController extends Controller
 {

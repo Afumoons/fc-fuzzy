@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Gate;
 use App\Models\Disease;
-use App\Http\Requests\Admin\UpdateDiseaseRequest;
-use App\Http\Requests\Admin\StoreDiseaseRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\Admin\StoreDiseaseRequest;
+use App\Http\Requests\Admin\UpdateDiseaseRequest;
 
 class DiseaseController extends Controller
 {

@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Disease;
 use App\Models\Symptom;
 use App\Models\Rulebase;
 use App\Models\FuzzyRule;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\StoreRulebaseRequest;
-use App\Http\Requests\UpdateRulebaseRequest;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\FuzzyController;
+use App\Http\Requests\Admin\UpdateRulebaseRequest;
 
 class RulebaseController extends Controller
 {
@@ -83,13 +81,5 @@ class RulebaseController extends Controller
         (new FuzzyController)->saveRuleAttributes($disease->rulebases()->where('value', true)->get()->pluck('symptom_id'), (new FuzzyController)->statementArray, $disease);
 
         return to_route('admin.rulebase.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Rulebase $rulebase)
-    {
-        //
     }
 }

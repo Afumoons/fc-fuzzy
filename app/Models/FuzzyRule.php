@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Disease;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;

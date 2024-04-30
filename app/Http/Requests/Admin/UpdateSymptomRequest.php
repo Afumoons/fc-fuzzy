@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Symptom;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Symptom;
 
 class UpdateSymptomRequest extends FormRequest
 {

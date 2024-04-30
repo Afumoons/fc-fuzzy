@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Disease;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Disease;
 
 class UpdateDiseaseRequest extends FormRequest
 {

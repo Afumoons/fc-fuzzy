@@ -7,7 +7,6 @@ use App\Models\FuzzyRule;
 use App\Models\FuzzyTemp;
 use App\Models\FuzzyUserInput;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class FuzzyController extends Controller
 {
@@ -410,3 +409,4 @@ class FuzzyController extends Controller
         }
     }
 }
+

@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Admin\AdminController;
-use Inertia\Response;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Auth;
+use Inertia\Response;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Controllers\Admin\AdminController;
 
 class ProfileController extends Controller
 {

@@ -6,7 +6,6 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Disease;
 use App\Models\Symptom;
-use Illuminate\Http\Request;
 use App\Models\RulebaseHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;

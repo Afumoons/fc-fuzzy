@@ -8,18 +8,17 @@ use App\Models\Symptom;
 use App\Models\Rulebase;
 use App\Models\FuzzyTemp;
 use App\Models\UserInput;
-use Illuminate\Support\Arr;
 use App\Models\FuzzyHistory;
 use App\Models\RulebaseTemp;
 use Illuminate\Http\Request;
 use App\Models\FuzzyUserInput;
+use Illuminate\Support\Number;
 use App\Models\RulebaseHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\Admin\FuzzyController;
-use Illuminate\Support\Number;
 
 class FrontController extends Controller
 {
