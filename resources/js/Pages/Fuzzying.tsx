@@ -27,7 +27,7 @@ export default function Fuzzying({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("fuzzying.post2"));
+        post(route("fuzzying.post"));
     };
 
     const updateFormData = (e: any, value: string) => {

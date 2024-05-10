@@ -76,17 +76,13 @@ class FrontController extends Controller
             ]);
         }
 
-        $no = 0;
         $rule = array();
         $diseases = Disease::get();
         foreach ($diseases as $disease) {
-            $nox = $no++;
             $xx = 0;
-            $disease_id = $disease->id;
             $rule2 = array();
             $rulebases = Rulebase::where('disease_id', $disease->id)->where('value', true)->get();
             foreach ($rulebases as $rulebase) {
-                $xxx = $xx++;
                 array_push($rule2, $rulebase->symptom->code);
             }
 
@@ -300,42 +296,6 @@ class FrontController extends Controller
                 ]);
             }
         }
-    }
-
-    function fuzzyResult(FuzzyHistory $fuzzyHistory = null)
-    {
-        if (empty($fuzzyHistory)) {
-            $fuzzyTemps = FuzzyTemp::isOwned()->get();
-
-            $diseaseIds = $fuzzyTemps->pluck('disease_id')->unique();
-            if ($diseaseIds->count() > 1) {
-                $disease = null;
-            } else {
-                $disease = Disease::find($diseaseIds[0]);
-            }
-
-            $fuzzyResult = (new FuzzyController)->doFuzzy($disease, FuzzyTemp::IsOwned()->first());
-
-            $fuzzyHistory = FuzzyHistory::create([
-                'user_id' => Auth::user()->id,
-                'disease_id' => $disease->id ?? null,
-                'value' => $fuzzyResult,
-            ]);
-            $fuzzyUserInputs = FuzzyUserInput::IsOwned()->IsNotDone()->with('symptom')->get();
-            foreach ($fuzzyUserInputs as $key => $fuzzyuserInput) {
-                $fuzzyuserInput->update([
-                    'fuzzy_history_id' => $fuzzyHistory->id,
-                ]);
-            }
-        } else {
-            $disease = $fuzzyHistory->disease;
-            $fuzzyUserInputs = $fuzzyHistory->fuzzyUserInputs()->with('symptom')->get();
-        }
-        return Inertia::render('Fuzzy', $this->getViewData([
-            'disease' => $disease,
-            'fuzzyUserInputs' => $fuzzyUserInputs,
-            'fuzzyResult' => Number::percentage($fuzzyHistory->value, 1),
-        ]));
     }
 
     function history()

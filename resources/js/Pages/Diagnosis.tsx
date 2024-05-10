@@ -22,8 +22,6 @@ export default function Diagnosis({
     footerLogoLink?: string;
     fuzzyResult?: string;
 }>) {
-    console.log(fuzzyResult);
-
     return (
         <HomeLayout
             user={auth.user}
@@ -55,115 +53,119 @@ export default function Diagnosis({
                     </h5>
                     <div className="card card-body">
                         <table className="table table-bordered table-striped">
-                            <tr>
-                                <td>
-                                    <p className="font-bold">
-                                        Jawaban Pengguna
-                                    </p>
-                                </td>
-                                <td>
-                                    <h5>Diagnosis</h5>
-                                    <ul>
-                                        {rulebaseUserInputs.map(
-                                            (rulebaseUserInput) => (
-                                                <li
-                                                    key={rulebaseUserInput.id}
-                                                    className="list-group-item"
-                                                >
-                                                    {
-                                                        rulebaseUserInput
-                                                            .symptom.code
-                                                    }{" "}
-                                                    -{" "}
-                                                    {
-                                                        rulebaseUserInput
-                                                            .symptom.name
-                                                    }{" "}
-                                                    {rulebaseUserInput.value
-                                                        ? "-> (benar - ya)"
-                                                        : "-> (salah - tidak)"}
-                                                </li>
-                                            )
-                                        )}
-                                    </ul>
-                                    <h5 className="mt-3">Pembobotan</h5>
-                                    <ul>
-                                        {fuzzyUserInputs.map(
-                                            (fuzzyUserInput) => (
-                                                <li
-                                                    key={fuzzyUserInput.id}
-                                                    className="list-group-item"
-                                                >
-                                                    {
-                                                        fuzzyUserInput.symptom
-                                                            .code
-                                                    }{" "}
-                                                    -{" "}
-                                                    {
-                                                        fuzzyUserInput.symptom
-                                                            .name
-                                                    }
-                                                    {" ("}
-                                                    {fuzzyUserInput.value}
-                                                    {")"}
-                                                </li>
-                                            )
-                                        )}
-                                    </ul>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p className="font-bold">Hasil</p>
-                                </td>
-                                <td>
-                                    {disease
-                                        ? "Anda kemungkinan menderita " +
-                                          disease.name +
-                                          " sebesar " +
-                                          fuzzyResult
-                                        : "Penyakit tidak ditemukan"}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p className="font-bold">
-                                        Penyebab Penyakit
-                                    </p>
-                                </td>
-                                <td>{disease ? disease.cause : "-"}</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p className="font-bold">
-                                        Solusi Pertolongan Pertama
-                                    </p>
-                                </td>
-                                <td>{disease ? disease.solution : "-"}</td>
-                            </tr>
-                            {/* <tr>
-                                <td>
-                                    <p className="font-bold">
-                                        Tindakan Lanjutan
-                                    </p>
-                                </td>
-                                <td>
-                                    <p>
-                                        Ketahui seberapa mungkin penyakit yang
-                                        diderita dengan menggunakan fuzzy
-                                    </p>
-                                    <Link
-                                        href={
-                                            disease
-                                                ? route("fuzzy", [disease.code])
-                                                : "#"
-                                        }
-                                        className="d-block w-25 text-center inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                    >
-                                        Cek sekarang
-                                    </Link>
-                                </td>
-                            </tr> */}
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p className="font-bold">
+                                            Jawaban Pengguna
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <h5>Diagnosis</h5>
+                                        <ul>
+                                            {rulebaseUserInputs.map(
+                                                (rulebaseUserInput) => (
+                                                    <li
+                                                        key={
+                                                            rulebaseUserInput.id
+                                                        }
+                                                        className="list-group-item"
+                                                    >
+                                                        {
+                                                            rulebaseUserInput
+                                                                .symptom.code
+                                                        }{" "}
+                                                        -{" "}
+                                                        {
+                                                            rulebaseUserInput
+                                                                .symptom.name
+                                                        }{" "}
+                                                        {rulebaseUserInput.value
+                                                            ? "-> (benar - ya)"
+                                                            : "-> (salah - tidak)"}
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                        <h5 className="mt-3">Pembobotan</h5>
+                                        <ul>
+                                            {fuzzyUserInputs.map(
+                                                (fuzzyUserInput) => (
+                                                    <li
+                                                        key={fuzzyUserInput.id}
+                                                        className="list-group-item"
+                                                    >
+                                                        {
+                                                            fuzzyUserInput
+                                                                .symptom.code
+                                                        }{" "}
+                                                        -{" "}
+                                                        {
+                                                            fuzzyUserInput
+                                                                .symptom.name
+                                                        }
+                                                        {" ("}
+                                                        {fuzzyUserInput.value}
+                                                        {")"}
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p className="font-bold">Hasil</p>
+                                    </td>
+                                    <td>
+                                        {disease
+                                            ? "Anda kemungkinan menderita " +
+                                              disease.name +
+                                              " sebesar " +
+                                              fuzzyResult
+                                            : "Penyakit tidak ditemukan"}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p className="font-bold">
+                                            Penyebab Penyakit
+                                        </p>
+                                    </td>
+                                    <td>{disease ? disease.cause : "-"}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p className="font-bold">
+                                            Solusi Pertolongan Pertama
+                                        </p>
+                                    </td>
+                                    <td>{disease ? disease.solution : "-"}</td>
+                                </tr>
+                                {/* <tr>
+                                    <td>
+                                        <p className="font-bold">
+                                            Tindakan Lanjutan
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Ketahui seberapa mungkin penyakit yang
+                                            diderita dengan menggunakan fuzzy
+                                        </p>
+                                        <Link
+                                            href={
+                                                disease
+                                                    ? route("fuzzy", [disease.code])
+                                                    : "#"
+                                            }
+                                            className="d-block w-25 text-center inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                        >
+                                            Cek sekarang
+                                        </Link>
+                                    </td>
+                                </tr> */}
+                            </tbody>
                         </table>
                     </div>
                 </div>
