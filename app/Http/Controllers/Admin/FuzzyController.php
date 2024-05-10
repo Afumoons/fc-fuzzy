@@ -318,6 +318,11 @@ class FuzzyController extends Controller
             $inputPasien[$fuzzyUserInput->symptom_id] = $value;
         }
 
+        // Jika InputPasien atau FuzzyUserInput tidak ada
+        if (empty($inputPasien)) {
+            return null;
+        }
+
         // Evaluasi aturan Fuzzy Sugeno
         $aktivasiAturan = [];
         foreach ($penyakit as $namaPenyakit => $dataPenyakit) {
