@@ -28,7 +28,7 @@ export interface Rulebase {
     value: boolean;
 }
 
-export interface UserInput {
+export interface RulebaseUserInput {
     id: number;
     user_id: number;
     symptom_id: number;
@@ -72,8 +72,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     symptoms: Array<Symptom>;
     rulebase: Rulebase;
     rulebases: Array<Rulebase>;
-    userInput: UserInput;
-    userInputs: Array<UserInput>;
+    rulebaseUserInput: RulebaseUserInput;
+    rulebaseUserInputs: Array<RulebaseUserInput>;
     fuzzyUserInput: FuzzyUserInput;
     fuzzyUserInputs: Array<FuzzyUserInput>;
     rulebaseHistory: RulebaseHistory;

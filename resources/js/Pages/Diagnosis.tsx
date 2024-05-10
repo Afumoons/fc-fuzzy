@@ -10,7 +10,7 @@ export default function Diagnosis({
     auth,
     isAdmin,
     disease,
-    userInputs,
+    rulebaseUserInputs,
     fuzzyUserInputs,
     logoLink,
     footerLogoLink,
@@ -64,18 +64,27 @@ export default function Diagnosis({
                                 <td>
                                     <h5>Diagnosis</h5>
                                     <ul>
-                                        {userInputs.map((userInput) => (
-                                            <li
-                                                key={userInput.id}
-                                                className="list-group-item"
-                                            >
-                                                {userInput.symptom.code} -{" "}
-                                                {userInput.symptom.name}{" "}
-                                                {userInput.value
-                                                    ? "-> (benar - ya)"
-                                                    : "-> (salah - tidak)"}
-                                            </li>
-                                        ))}
+                                        {rulebaseUserInputs.map(
+                                            (rulebaseUserInput) => (
+                                                <li
+                                                    key={rulebaseUserInput.id}
+                                                    className="list-group-item"
+                                                >
+                                                    {
+                                                        rulebaseUserInput
+                                                            .symptom.code
+                                                    }{" "}
+                                                    -{" "}
+                                                    {
+                                                        rulebaseUserInput
+                                                            .symptom.name
+                                                    }{" "}
+                                                    {rulebaseUserInput.value
+                                                        ? "-> (benar - ya)"
+                                                        : "-> (salah - tidak)"}
+                                                </li>
+                                            )
+                                        )}
                                     </ul>
                                     <h5 className="mt-3">Pembobotan</h5>
                                     <ul>

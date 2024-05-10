@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_inputs', function (Blueprint $table) {
+        Schema::create('rulebase_user_inputs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class, 'user_id')
                 // ->after('indikator_id')
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_inputs');
+        Schema::dropIfExists('rulebase_user_inputs');
     }
 };

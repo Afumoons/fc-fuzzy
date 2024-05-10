@@ -7,13 +7,13 @@ use App\Models\Disease;
 use App\Models\Symptom;
 use App\Models\Rulebase;
 use App\Models\FuzzyTemp;
-use App\Models\UserInput;
 use App\Models\FuzzyHistory;
 use App\Models\RulebaseTemp;
 use Illuminate\Http\Request;
 use App\Models\FuzzyUserInput;
 use Illuminate\Support\Number;
 use App\Models\RulebaseHistory;
+use App\Models\RulebaseUserInput;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -63,7 +63,7 @@ class FrontController extends Controller
     {
         $rulebases = Rulebase::get();
         RulebaseTemp::IsOwned()->delete();
-        UserInput::IsOwned()->IsNotDone()->delete();
+        RulebaseUserInput::IsOwned()->IsNotDone()->delete();
         FuzzyTemp::IsOwned()->delete();
         FuzzyUserInput::IsOwned()->IsNotDone()->delete();
 
@@ -115,9 +115,9 @@ class FrontController extends Controller
     {
         $request['value'] = $request->value == "true" ? true : false;
 
-        $cek = UserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
+        $cek = RulebaseUserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
         if (empty($cek[0])) {
-            UserInput::create([
+            RulebaseUserInput::create([
                 'user_id' => Auth::user()->id,
                 'symptom_id' => $request->symptom_id,
                 'value' => $request->value == "true" ? 1 : 0,
@@ -153,8 +153,8 @@ class FrontController extends Controller
 
             if (RulebaseTemp::IsOwned()->get()->count() > 0) {
                 $symptomArray = [];
-                foreach (UserInput::IsOwned()->IsNotDone()->get() as $key => $userInput) {
-                    $symptomArray[$key] = $userInput->symptom_id;
+                foreach (RulebaseUserInput::IsOwned()->IsNotDone()->get() as $key => $rulebaseUserInput) {
+                    $symptomArray[$key] = $rulebaseUserInput->symptom_id;
                 }
 
                 $rulebaseTemp = RulebaseTemp::whereNotIn('symptom_id', $symptomArray)->where('value', true)->first();
@@ -225,9 +225,9 @@ class FrontController extends Controller
                 'fuzzy_value' => $fuzzyResult ?? null,
             ]);
 
-            $userInputs = UserInput::IsOwned()->IsNotDone()->with('symptom')->get();
-            foreach ($userInputs as $key => $userInput) {
-                $userInput->update([
+            $rulebaseUserInputs = RulebaseUserInput::IsOwned()->IsNotDone()->with('symptom')->get();
+            foreach ($rulebaseUserInputs as $key => $rulebaseUserInput) {
+                $rulebaseUserInput->update([
                     'rulebase_history_id' => $rulebaseHistory->id,
                 ]);
             }
@@ -240,14 +240,14 @@ class FrontController extends Controller
             }
         } else {
             $disease = $rulebaseHistory->disease;
-            $userInputs = $rulebaseHistory->userInputs()->with('symptom')->get();
+            $rulebaseUserInputs = $rulebaseHistory->rulebaseUserInputs()->with('symptom')->get();
             $fuzzyUserInputs = $rulebaseHistory->fuzzyUserInputs()->with('symptom')->get();
         }
 
         // UserInput::IsOwned()->IsNotDone()->delete();
         return Inertia::render('Diagnosis', $this->getViewData([
             'disease' => $disease,
-            'userInputs' => $userInputs,
+            'rulebaseUserInputs' => $rulebaseUserInputs,
             'fuzzyUserInputs' => $fuzzyUserInputs,
             'fuzzyResult' => $rulebaseHistory->fuzzy_value ? Number::percentage($rulebaseHistory->fuzzy_value, 1) : null,
         ]));
@@ -275,8 +275,8 @@ class FrontController extends Controller
         }
 
         $symptomArray = [];
-        foreach (UserInput::IsOwned()->IsNotDone()->where('value', true)->get() as $key => $userInput) {
-            $symptomArray[$key] = $userInput->symptom_id;
+        foreach (RulebaseUserInput::IsOwned()->IsNotDone()->where('value', true)->get() as $key => $rulebaseUserInput) {
+            $symptomArray[$key] = $rulebaseUserInput->symptom_id;
         }
 
         // cek apa ada yang belum di diagnosis

@@ -47,13 +47,13 @@ class RulebaseHistory extends Model
     }
 
     /**
-     * Get the userInputs that owned by rulebaseHistory
+     * Get the rulebaseUserInputs that owned by rulebaseHistory
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function userInputs(): HasMany
+    public function rulebaseUserInputs(): HasMany
     {
-        return $this->hasMany(UserInput::class, 'rulebase_history_id', 'id');
+        return $this->hasMany(RulebaseUserInput::class, 'rulebase_history_id', 'id');
     }
 
     /**
