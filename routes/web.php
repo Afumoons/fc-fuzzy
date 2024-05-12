@@ -18,10 +18,6 @@ use App\Http\Controllers\Admin\FuzzyController;
 |
 */
 
-Route::get('/whatsapp', function () {
-    return Inertia::location("https://wa.me/+6287744554566");
-})->name('whatsapp');
-
 Route::get('/mail', function () {
     return Inertia::location("mailto:afumoons@gmail.com");
 })->name('mail');
