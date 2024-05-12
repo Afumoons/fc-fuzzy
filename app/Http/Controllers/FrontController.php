@@ -215,10 +215,6 @@ class FrontController extends Controller
                 $fuzzyResult = (new FuzzyController)->doFuzzy($disease, $fuzzyTemp);
             }
 
-            if (empty($fuzzyResult)) {
-                return to_route('home');
-            }
-
             $rulebaseHistory = RulebaseHistory::create([
                 'user_id' => Auth::user()->id,
                 'disease_id' => $disease->id ?? null,
