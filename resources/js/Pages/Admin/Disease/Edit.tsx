@@ -26,7 +26,7 @@ export default function Create({ auth, isAdmin, disease, logo }: PageProps) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Tambah Data Penyakit
+                    Edit Data Penyakit
                 </h2>
             }
             isAdmin={isAdmin}

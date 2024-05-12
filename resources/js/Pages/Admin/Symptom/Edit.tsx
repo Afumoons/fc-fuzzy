@@ -24,7 +24,7 @@ export default function Edit({ auth, isAdmin, symptom, logo }: PageProps) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Tambah Data Gejala
+                    Edit Data Gejala
                 </h2>
             }
             isAdmin={isAdmin}
