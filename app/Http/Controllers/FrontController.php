@@ -109,10 +109,12 @@ class FrontController extends Controller
 
     function diagnosing(Request $request, $odd = true)
     {
+        // ubah value dari string ke boolean
         $request['value'] = $request->value == "true" ? true : false;
 
-        $cek = RulebaseUserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->get();
-        if (empty($cek[0])) {
+        // cek apakah terdapat input (rulebase) untuk gejala ini
+        if (empty(RulebaseUserInput::IsOwned()->IsNotDone()->where('symptom_id', $request->symptom_id)->where('value', $request->value)->first())) {
+            // jika belum ada tambahkan data
             RulebaseUserInput::create([
                 'user_id' => Auth::user()->id,
                 'symptom_id' => $request->symptom_id,
@@ -120,8 +122,7 @@ class FrontController extends Controller
             ]);
         }
 
-        // if ya
-        if ($request->value) {
+        if ($request->value) { // if jawaban ya
             $diseasesArray = [];
 
             foreach (RulebaseTemp::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', true)->get() as $key => $rulebaseTemp) {
@@ -134,14 +135,12 @@ class FrontController extends Controller
             // hapus semua yang value false
             RulebaseTemp::IsOwned()->where('value', false)->delete();
 
-            // dd($request->all(), $rulebaseTemps, $rule, $symptom);
+            // return view
             return Inertia::render('Fuzzying', $this->getViewData([
                 'symptom' => Symptom::findOrFail($request->symptom_id),
                 'statements' => $this->statementArray,
             ]));
-
-            //if tidak
-        } else {
+        } else { //if jawab tidak
             // hapus yang symptom_id true
             foreach (RulebaseTemp::IsOwned()->where('symptom_id', $request->symptom_id)->where('value', true)->get() as $key => $rulebaseTemp) {
                 RulebaseTemp::IsOwned()->where('disease_id', $rulebaseTemp->disease_id)->delete();
@@ -169,6 +168,7 @@ class FrontController extends Controller
                 }
             } else {
                 result:
+                // return hasil diagnosis
                 return to_route('diagnosisResult');
             }
         }
