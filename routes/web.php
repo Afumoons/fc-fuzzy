@@ -49,32 +49,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/pembobotan-fuzzy', [FrontController::class, 'fuzzyingPost'])->name('fuzzying.post');
     Route::post('/pembobotan-fuzzy2', [FrontController::class, 'fuzzyingPost2'])->name('fuzzying.post2');
 });
-/* ################### EBD : AUTHENTICATED USER ROUTE HERE #################### */
+/* ################### END : AUTHENTICATED USER ROUTE HERE #################### */
 
 /* ################### BEGIN : ADMIN ROUTE HERE #################### */
 Route::prefix('/admin')->middleware(['can:isAdmin'])->name('admin.')->group(function () {
-    /* ################### BEGIN : MONITORING INDIKATOR ROUTE HERE #################### */
+    /* ################### BEGIN : DISEASE ROUTE HERE #################### */
     Route::prefix('/disease')->name('disease.')->group(__DIR__ . '/admin_routes/disease.php');
-    /* ################### END : MONITORING INDIKATOR ROUTE HERE #################### */
+    /* ################### END : DISEASE ROUTE HERE #################### */
 
-    /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
+    /* ################### BEGIN : RULEBASE ROUTE HERE #################### */
     Route::prefix('/rulebase')->name('rulebase.')->group(__DIR__ . '/admin_routes/rulebase.php');
-    /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
+    /* ################### END : RULEBASE ROUTE HERE #################### */
 
-    /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
+    /* ################### BEGIN : SYMPTOM ROUTE HERE #################### */
     Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/admin_routes/symptom.php');
-    /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
+    /* ################### END : SYMPTOM ROUTE HERE #################### */
 
-    /* ################### BEGIN : INDIKATOR AUDIT ROUTE HERE #################### */
+    /* ################### BEGIN : RULEBASEHISTORY ROUTE HERE #################### */
     Route::prefix('/rulebaseHistory')->name('rulebaseHistory.')->group(__DIR__ . '/admin_routes/rulebaseHistory.php');
-    /* ################### END : INDIKATOR AUDIT ROUTE HERE #################### */
+    /* ################### END : RULEBASEHISTORY ROUTE HERE #################### */
 });
 /* ################### END : ADMIN ROUTE HERE #################### */
 
+/* ################### BEGIN : AUTH ROUTE HERE #################### */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+/* ################### END : AUTH ROUTE HERE #################### */
 
 require __DIR__ . '/auth.php';
