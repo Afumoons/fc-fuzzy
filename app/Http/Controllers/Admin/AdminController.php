@@ -37,7 +37,7 @@ class AdminController extends Controller
         ];
         return Inertia::render('Dashboard', $this->getViewData([
             'dashboardCounts' => $dashboardCounts,
-            'rulebaseHistorys' => RulebaseHistory::with('user', 'disease')->get(),
+            'rulebaseHistorys' => RulebaseHistory::IsOwned()->with('user', 'disease')->get(),
         ]));
     }
 }
