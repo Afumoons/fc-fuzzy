@@ -9,7 +9,7 @@ export default function Dashboard({
     auth,
     isAdmin,
     dashboardCounts,
-    rulebaseHistorys,
+    rulebaseHistories,
     logo,
 }: PageProps) {
     return (
@@ -63,7 +63,7 @@ export default function Dashboard({
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {rulebaseHistorys.map(
+                                    {rulebaseHistories.map(
                                         (rulebaseHistory, index) => (
                                             <tr key={rulebaseHistory.id}>
                                                 <td>{index + 1}</td>
