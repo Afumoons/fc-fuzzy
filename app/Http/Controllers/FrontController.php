@@ -297,7 +297,7 @@ class FrontController extends Controller
     function history()
     {
         return Inertia::render('History', [
-            'rulebaseHistorys' => RulebaseHistory::with('user', 'disease')->get(),
+            'rulebaseHistories' => RulebaseHistory::with('user', 'disease')->get(),
         ]);
     }
 }

@@ -6,7 +6,7 @@ import BreadCrumb from "@/Components/Front/BreadCrumb";
 export default function History({
     auth,
     isAdmin,
-    rulebaseHistorys,
+    rulebaseHistories,
 }: PageProps<{
     laravelVersion: string;
     phpVersion: string;
@@ -47,7 +47,7 @@ export default function History({
                                 </tr>
                             </thead>
                             <tbody>
-                                {rulebaseHistorys.map(
+                                {rulebaseHistories.map(
                                     (rulebaseHistory, index) => (
                                         <tr key={rulebaseHistory.id}>
                                             <td>{index + 1}</td>
