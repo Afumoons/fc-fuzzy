@@ -21,15 +21,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('users', function () {
-    return response()->json(User::get()->toArray());
-});
-Route::get('diseases', function () {
-    return response()->json(Disease::get()->toArray());
-});
-Route::get('symptoms', function () {
-    return response()->json(Symptom::get()->toArray());
-});
-Route::get('rulebases', function () {
-    return response()->json(Rulebase::get()->toArray());
-});
+
+/* ################### BEGIN : USER ROUTE HERE #################### */
+Route::prefix('/user')->name('user.')->group(__DIR__ . '/api_routes/user.php');
+/* ################### END : USER ROUTE HERE #################### */
+
+/* ################### BEGIN : DISEASE ROUTE HERE #################### */
+Route::prefix('/disease')->name('disease.')->group(__DIR__ . '/api_routes/disease.php');
+/* ################### END : DISEASE ROUTE HERE #################### */
+
+/* ################### BEGIN : RULEBASE ROUTE HERE #################### */
+Route::prefix('/rulebase')->name('rulebase.')->group(__DIR__ . '/api_routes/rulebase.php');
+/* ################### END : RULEBASE ROUTE HERE #################### */
+
+/* ################### BEGIN : SYMPTOM ROUTE HERE #################### */
+Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/api_routes/symptom.php');
+/* ################### END : SYMPTOM ROUTE HERE #################### */
