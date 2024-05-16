@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Disease;
 use App\Models\UserInput;
 use App\Models\FuzzyUserInput;
+use App\Models\RulebaseUserInput;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +27,11 @@ class RulebaseHistory extends Model
         'disease_id',
         'fuzzy_value',
     ];
+
+    function scopeIsOwned($query)
+    {
+        return $query->where('user_id', Auth::user()->id);
+    }
 
     /**
      * Get the user that owns the rulebaseHistory
