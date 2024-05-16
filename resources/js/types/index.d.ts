@@ -77,6 +77,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     fuzzyUserInput: FuzzyUserInput;
     fuzzyUserInputs: Array<FuzzyUserInput>;
     rulebaseHistory: RulebaseHistory;
-    rulebaseHistorys: Array<RulebaseHistory>;
+    rulebaseHistories: Array<RulebaseHistory>;
     statements: Array<string>;
 };
