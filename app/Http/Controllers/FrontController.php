@@ -152,7 +152,7 @@ class FrontController extends Controller
                     $symptomArray[$key] = $rulebaseUserInput->symptom_id;
                 }
 
-                $rulebaseTemp = RulebaseTemp::whereNotIn('symptom_id', $symptomArray)->where('value', true)->first();
+                $rulebaseTemp = RulebaseTemp::IsOwned()->whereNotIn('symptom_id', $symptomArray)->where('value', true)->first();
                 if ($rulebaseTemp) {
                     if ($odd) {
                         return Inertia::render('Diagnosing', [
