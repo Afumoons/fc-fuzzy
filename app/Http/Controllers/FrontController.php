@@ -118,7 +118,7 @@ class FrontController extends Controller
             RulebaseUserInput::create([
                 'user_id' => Auth::user()->id,
                 'symptom_id' => $request->symptom_id,
-                'value' => $request->value == "true" ? 1 : 0,
+                'value' => $request->value,
             ]);
         }
 
