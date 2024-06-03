@@ -22,18 +22,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/* ################### BEGIN : USER ROUTE HERE #################### */
-Route::prefix('/user')->name('user.')->group(__DIR__ . '/api_routes/user.php');
-/* ################### END : USER ROUTE HERE #################### */
+Route::middleware('auth:sanctum')->group(function () {
+    /* ################### BEGIN : USER ROUTE HERE #################### */
+    Route::prefix('/user')->name('user.')->group(__DIR__ . '/api_routes/user.php');
+    /* ################### END : USER ROUTE HERE #################### */
+});
 
-/* ################### BEGIN : DISEASE ROUTE HERE #################### */
-Route::prefix('/disease')->name('disease.')->group(__DIR__ . '/api_routes/disease.php');
-/* ################### END : DISEASE ROUTE HERE #################### */
+Route::name('api.')->group(function () {
+    /* ################### BEGIN : DISEASE ROUTE HERE #################### */
+    Route::prefix('/disease')->name('disease.')->group(__DIR__ . '/api_routes/disease.php');
+    /* ################### END : DISEASE ROUTE HERE #################### */
 
-/* ################### BEGIN : RULEBASE ROUTE HERE #################### */
-Route::prefix('/rulebase')->name('rulebase.')->group(__DIR__ . '/api_routes/rulebase.php');
-/* ################### END : RULEBASE ROUTE HERE #################### */
+    /* ################### BEGIN : RULEBASE ROUTE HERE #################### */
+    Route::prefix('/rulebase')->name('rulebase.')->group(__DIR__ . '/api_routes/rulebase.php');
+    /* ################### END : RULEBASE ROUTE HERE #################### */
 
-/* ################### BEGIN : SYMPTOM ROUTE HERE #################### */
-Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/api_routes/symptom.php');
-/* ################### END : SYMPTOM ROUTE HERE #################### */
+    /* ################### BEGIN : SYMPTOM ROUTE HERE #################### */
+    Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/api_routes/symptom.php');
+    /* ################### END : SYMPTOM ROUTE HERE #################### */
+});
