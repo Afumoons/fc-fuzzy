@@ -12,6 +12,7 @@ export interface Disease {
     cause: string;
     solution: string;
     rulebases: Array<Rulebase>;
+    fuzzy_rules: Array<FuzzyRule>;
 }
 
 export interface Symptom {
@@ -26,6 +27,18 @@ export interface Rulebase {
     disease_id: number;
     symptom_id: number;
     value: boolean;
+}
+
+export interface FuzzyRule {
+    id: number;
+    disease_id: number;
+    // data: JSON;
+    data: {
+        antecedent: Array<string>,
+        consequent: {
+            TingkatKeparahan: string
+        },
+    };
 }
 
 export interface RulebaseUserInput {
@@ -72,6 +85,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     symptoms: Array<Symptom>;
     rulebase: Rulebase;
     rulebases: Array<Rulebase>;
+    fuzzyRule: FuzzyRule;
+    fuzzyRules: Array<FuzzyRule>;
     rulebaseUserInput: RulebaseUserInput;
     rulebaseUserInputs: Array<RulebaseUserInput>;
     fuzzyUserInput: FuzzyUserInput;
