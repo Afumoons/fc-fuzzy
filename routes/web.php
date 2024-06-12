@@ -61,6 +61,10 @@ Route::prefix('/admin')->middleware(['can:isAdmin'])->name('admin.')->group(func
     Route::prefix('/rulebase')->name('rulebase.')->group(__DIR__ . '/admin_routes/rulebase.php');
     /* ################### END : RULEBASE ROUTE HERE #################### */
 
+    /* ################### BEGIN : FUZZY ROUTE HERE #################### */
+    Route::prefix('/fuzzy')->name('fuzzy.')->group(__DIR__ . '/admin_routes/fuzzy.php');
+    /* ################### END : FUZZY ROUTE HERE #################### */
+
     /* ################### BEGIN : SYMPTOM ROUTE HERE #################### */
     Route::prefix('/symptom')->name('symptom.')->group(__DIR__ . '/admin_routes/symptom.php');
     /* ################### END : SYMPTOM ROUTE HERE #################### */

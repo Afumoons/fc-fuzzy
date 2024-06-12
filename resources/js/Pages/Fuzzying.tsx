@@ -90,7 +90,11 @@ export default function Fuzzying({
                             ))}
                         </div>
 
-                        <PrimaryButton type="submit" className="d-inline w-50">
+                        <PrimaryButton
+                            disabled={processing}
+                            type="submit"
+                            className="d-inline w-50"
+                        >
                             Simpan Jawaban
                         </PrimaryButton>
                     </form>

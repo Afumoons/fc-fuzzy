@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Inertia\Inertia;
 use App\Models\Disease;
+use App\Models\Symptom;
 use App\Models\FuzzyRule;
 use App\Models\FuzzyTemp;
 use App\Models\FuzzyUserInput;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Requests\Admin\UpdateFuzzyRuleRequest;
 
 class FuzzyController extends Controller
 {
@@ -197,5 +202,69 @@ class FuzzyController extends Controller
                 return 0.0;
             }
         }
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $diseases = Disease::with('fuzzyRules')->get();
+        // dd($diseases);
+        return Inertia::render('Admin/Fuzzy/Index', (new AdminController)->getViewData([
+            'diseases' => $diseases,
+        ]));
+    }
+
+    /**
+     * Show the list for displaying the specified fuzzy rule resource.
+     */
+    public function show(Disease $disease)
+    {
+        $disease = Disease::with('fuzzyRules')->findOrFail($disease->id)->toArray();
+
+        $antecedentArray = [];
+        foreach ($disease['fuzzy_rules'] as $key => $fuzzyRule) {
+            foreach ($fuzzyRule['data']['antecedent'] as $index => $value) {
+                $symptom = Symptom::findOrFail($index);
+                $antecedentArray[$symptom->code . ' ' . $symptom->name] =   ' -> ' . $value;
+            }
+            $disease['fuzzy_rules'][$key]['data']['antecedent'] = $antecedentArray;
+        }
+
+        return Inertia::render('Admin/Fuzzy/Show', (new AdminController)->getViewData([
+            'isAdmin' => Gate::allows('isAdmin'),
+            'disease' => $disease,
+        ]));
+    }
+
+    public function edit(FuzzyRule $fuzzyRule)
+    {
+        $fuzzyRule = FuzzyRule::findOrFail($fuzzyRule->id)->toArray();
+
+        $antecedentArray = [];
+        foreach ($fuzzyRule['data']['antecedent'] as $index => $value) {
+            $symptom = Symptom::findOrFail($index);
+            $antecedentArray[$symptom->code . ' ' . $symptom->name] =   ' -> ' . $value;
+        }
+        $fuzzyRule['data']['antecedent'] = $antecedentArray;
+
+        // dd($fuzzyRule->data);
+        return Inertia::render('Admin/Fuzzy/Edit', (new AdminController)->getViewData([
+            'isAdmin' => Gate::allows('isAdmin'),
+            'fuzzyRule' => $fuzzyRule,
+        ]));
+    }
+
+    public function update(UpdateFuzzyRuleRequest $request, FuzzyRule $fuzzyRule)
+    {
+
+        $validatedData = $request->validated();
+        $dataArray = $fuzzyRule->data;
+        $dataArray['consequent']['TingkatKeparahan'] = $validatedData['result'];
+        $fuzzyRule->data = $dataArray;
+        $fuzzyRule->update($validatedData);
+
+        return to_route('admin.fuzzy.show', $fuzzyRule->disease);
     }
 }

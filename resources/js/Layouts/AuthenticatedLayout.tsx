@@ -72,6 +72,14 @@ export default function Authenticated({
                                         Relasi Penyakit (Rulebase)
                                     </NavLink>
                                 )}
+                                {isAdmin && (
+                                    <NavLink
+                                        href={route("admin.fuzzy.index")}
+                                        active={route().current("admin.fuzzy*")}
+                                    >
+                                        Fuzzy Rule
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
